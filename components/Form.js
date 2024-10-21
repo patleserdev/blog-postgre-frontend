@@ -36,6 +36,7 @@ export default function Form({ schema }) {
   const handleSubmit = (e) => {
     e.preventDefault()
     console.log(formData)
+    // if steps , add steps to formdata
     // vérifier tous les champs
     // vérifier si chaque champ de formdata == champ de datas et rempli 
     // afficher des erreurs si manque

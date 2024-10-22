@@ -1,8 +1,13 @@
 "use client"
 import { useEffect,useState } from "react"
-export default function Getdatas({ source,inputs }) {
+import { useSelector } from 'react-redux';
+import Editbutton from "./Editbutton.js";
+import Deletebutton from "./Deletebutton.js";
+
+export default function Getdatas({ source,inputs,identifier }) {
     const URL_BACKEND="http://localhost:3000"
     const [datas,setDatas]=useState([])
+    const reload = useSelector((state) => state.reloader.value);
 
     useEffect(()=>{
         (async()=>{
@@ -12,17 +17,16 @@ export default function Getdatas({ source,inputs }) {
                 const result = await response.json()
                 if(result)
                 {
-                    // console.log(result)
+                    console.log(result)
                     setDatas(result.data)
                 }
                
             }
         })()
-    },[])
+    },[reload])
 
     const displayDatas=[]
     let i=0
-    
     if(datas)
     {
       for(let data of datas)
@@ -31,9 +35,11 @@ export default function Getdatas({ source,inputs }) {
            let widthResizer=(100/inputs.length)
   
            inputs.map((input,i) =>  content.push(<td className={`w-[${widthResizer}%] capitalize`} key={"td"+i} >
-            {typeof data[input] == 'boolean' ? 'boolean' : decodeURI(data[input]) }
+            {decodeURI(data[input])}
             </td>) )   
-           displayDatas.push(<tr key={i++}>{content}</tr>)
+            content.push(<td key={i}><Editbutton source={source} id={data[identifier]}/> <Deletebutton source={source}  id={data[identifier]}/></td>)
+           displayDatas.push(<tr key={i}>{content}</tr>)
+           i++
        }
    
     }

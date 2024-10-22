@@ -3,7 +3,7 @@ import { useEffect,useState } from "react"
 export default function GetSelectableDatas({ source,counter,valueinselect,displayinselect }) {
     const URL_BACKEND="http://localhost:3000"
     const [datas,setDatas]=useState([])
-console.log(displayinselect)
+
     useEffect(()=>{
 
         (async()=>{
@@ -13,9 +13,9 @@ console.log(displayinselect)
                 const result = await response.json()
                 if(result)
                 {
-                     console.log(result)
+                    //  console.log(result)
                     const formattedDatas=[]
-                    result.data.map((e)=> formattedDatas.push({value:e[valueinselect],display:e[displayinselect]}))
+                    result.data.map((e)=> formattedDatas.push({value:e[valueinselect],display:decodeURI(e[displayinselect])}))
                     formattedDatas.sort()
                     setDatas(formattedDatas)
                  
@@ -26,8 +26,9 @@ console.log(displayinselect)
     },[])
 
     const displayDatas=[]
+    displayDatas.push(<option value="selector" disabled key="selector">Sélectionnez</option>)
     // datas.map((e)=> displayDatas.push({value:e,label:e}))
-    datas.map((e,i)=> displayDatas.push(<option key={counter+i} value={e.value}>{e.display}</option>))
+    datas.map((e,i)=> displayDatas.push(<option className="capitalize" key={counter+i} value={e.value}>{e.display}</option>))
 
 
     return displayDatas

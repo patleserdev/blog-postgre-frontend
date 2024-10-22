@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Form from "../components/Form.js";
 import List from "../components/List.js";
 import Navbar from "@/components/Navbar";
@@ -9,6 +10,17 @@ export const metadata = {
 const Comments = () => {
   const schema = "comments";
 
+  const[reload,setReload]=useState(false)
+
+  const getReload=(value)=>{
+
+    if(value)
+    {
+      console.log('reload',value)
+      setReload(!reload)
+    }
+  }
+
   return (
     <>
     <Head>
@@ -19,9 +31,9 @@ const Comments = () => {
       <main className="w-full flex flex-col items-center justify-center">
         <h1 className="text-2xl underline">Commentaires :</h1>
 
-        <Form schema={schema} />
+        <Form schema={schema}/>
 
-        <List schema={schema} />
+        <List schema={schema}/>
       </main>
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center"></footer>
     </div>

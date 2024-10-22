@@ -111,6 +111,7 @@ export const datas=[
   {
   source:'users',
   label:'Utilisateurs',
+  identifier:'user_id',
   inputs:
   [
     {
@@ -138,6 +139,7 @@ export const datas=[
 {
   source:'posts',
   label:'posts',
+  identifier:'post_id',
   inputs:
   [
     {
@@ -153,10 +155,21 @@ export const datas=[
       type:'longtext',
       required:true,
       placeholder:'le contenu du post'
+     },
+     {
+      label:'Catégorie',
+      field:'categorie_id',
+      type:'entity',
+      entity:'postcategories',
+      displayinselect:'title',
+      valueinselect:'categorie_id',
+      comments:'permet de choisir l\'utilisateur dans la liste d\'utilisateur',
+      required:true,
+      placeholder:'Choisir l\'utilisateur'
      }
      ,{
       label:'Archivé',
-      field:'isdestroyed',
+      field:'isarchived',
       type:'boolean',
       required:false,
       placeholder:'Cocher s\'il est archivé'
@@ -168,11 +181,19 @@ export const datas=[
       required:false,
       placeholder:'Cocher s\'il est détruit'
      }
+     ,{
+      label:'Image',
+      field:'picture_url',
+      type:'upload',
+      required:false,
+      placeholder:'Cocher s\'il est détruit'
+     }
   ]
 },
 {
   source:'comments',
   label:'Commentaires',
+  identifier:'comment_id',
   inputs:
   [
     {
@@ -188,16 +209,18 @@ export const datas=[
       type:'longtext',
       required:true,
       placeholder:'le contenu du commentaire'
-     },
+     }
      ,{
       label:'Archivé ?',
       field:'isarchived',
       type:'boolean',
-     },
+      required:false,
+     }
      ,{
       label:'Détruit ?',
       field:'isdestroyed',
       type:'boolean',
+      
      },
      {
       label:'Utilisateur',
@@ -227,6 +250,7 @@ export const datas=[
 {
   source:'postcategories',
   label:'Catégories de posts',
+  identifier:'categorie_id',
   inputs:
   [
     {

@@ -3,20 +3,22 @@ import React, { useState,useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUpload} from '@fortawesome/free-solid-svg-icons';
-// import { useDispatch,useSelector } from 'react-redux';
-// import { addFile } from '../reducers/file';
+
+import { useDispatch,useSelector } from 'react-redux';
+import { addFile } from '../reducers/file';
+
 const FileUpload = () => {
 
   const [files, setFiles] = useState([]);
-  // const dispatch = useDispatch();
-  // const file = useSelector((state) => state.file.value);
-  // useEffect(() => {
-  //   if(!file)
-  //   {
-  //     setFiles([])
-  //   }
+  const dispatch = useDispatch();
+  const file = useSelector((state) => state.file.value);
+  useEffect(() => {
+    if(!file)
+    {
+      setFiles([])
+    }
 
-  // }, [file]);
+  }, [file]);
 
   // const [uploadedFiles, setUploadedFiles] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
@@ -42,7 +44,7 @@ const FileUpload = () => {
     <div {...getRootProps()} className={styles.uploadBox} >
       <div className={styles.uploadInput}>
         <div>
-      <label>Ajouter l'image de l'ingrédient</label>
+      <label>Ajouter l'image du post</label>
       </div>
       <input {...getInputProps()}/>
       {displayFiles.length == 0 && <FontAwesomeIcon icon={faUpload} className={styles.icon}/>}

@@ -11,35 +11,163 @@ import {
   faCircleCheck,
 } from "@fortawesome/free-solid-svg-icons";
 
+import { useSelector, useDispatch } from "react-redux";
+import { reloading } from '../reducers/reloader';
+import { deleteFile } from "../reducers/file";
+
 export default function Form({ schema }) {
+  const BACKEND_URL = "http://localhost:3000";
+
   const [formData, setFormData] = useState([]);
   const [addedSteps, setAddedSteps] = useState([]);
   const [stepInput, setStepInput] = useState("");
   const [editStep, setEditStep] = useState(null);
-  const [errors,setErrors] =useState([])
+  const [errors, setErrors] = useState([]);
+  const [success, setSuccess] = useState([]);
+
+  const dispatch = useDispatch();
+  const reload = useSelector((state) => state.reloader.value);
+  const file = useSelector((state) => state.file.value);
+
   /**
    *  mise à jour du formulaire
    */
   const handleChange = (e) => {
-
-    console.log(e.target.attributes.field.value)
- 
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.attributes.field.value]: e.target.value,
-    }));
+    // version boolean
+    // console.log(e.target.attributes.field.value,e.target.checked)
+    if (e.target.type == "checkbox") {
+      setFormData((prev) => ({
+        ...prev,
+        [e.target.attributes.field.value]: e.target.checked,
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [e.target.attributes.field.value]: e.target.value,
+      }));
+    }
   };
 
   /**
    * Soumission du formulaire
    */
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log(formData)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     // if steps , add steps to formdata
+
     // vérifier tous les champs
-    // vérifier si chaque champ de formdata == champ de datas et rempli 
-    // afficher des erreurs si manque
+    checkFields();
+  };
+
+  /**
+   *  Contrôle de la présence des champs de Datas dans formData et s'ils contiennent bien une valeur
+   */
+  const checkFields = () => {
+    const fieldErrors = [];
+    setErrors([]);
+
+    const inputs = [];
+    datas.filter((data) =>
+      data.source == schema
+        ? data.inputs.map((input) =>
+            input.required ? inputs.push(input.field) : null
+          )
+        : null
+    );
+
+    for (let input of inputs) {
+      if (!Object.keys(formData).find((key) => key == input)) {
+        fieldErrors.push(input);
+      } else {
+        if (formData[input] == "" || formData[input] == " ") {
+          fieldErrors.push(input);
+        } else {
+          console.log(input, "ok");
+        }
+      }
+    }
+
+    setErrors(fieldErrors);
+
+    if (fieldErrors.length == 0) {
+      handlePush();
+      setFormData([]);
+    }
+  };
+
+  /**
+   *  Envoi des données au backend
+   */
+  const handlePush = async () => {
+
+    if (file) {
+      const formDataToUpload = new FormData();
+      formDataToUpload.append("file", file[0], file[0].name);
+      try {
+        const response = await fetch(`${BACKEND_URL}/${schema}/addfile`, {
+          method: "POST",
+          
+          // credentials: 'include' ,
+          headers: {
+            // Content-Type: "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: formDataToUpload,
+          
+        });
+
+        if (response) 
+        {
+          const result = await response.json();
+          console.log("addfile result",result);
+             setFormData((prev) => ({
+            ...prev,
+            ['picture_url']: result.url,['public_id']: result.publicid,
+          }));
+        }
+        else 
+        {
+          console.error("Error uploading file:"+ response.statusText);
+          setErrors((prev) => [...prev, "Error uploading file:"+ response.statusText]);
+        }
+      }
+      catch (error) {
+        console.error("Network error:", error);
+        setErrors((prev) => [...prev, "Network error:"+ error]);
+
+      
+      }
+    }
+
+    (async () => {
+      const response = await fetch(`${BACKEND_URL}/${schema}`, {
+        method: "POST",
+        headers: {
+          // Content-Type: "multipart/form-data",
+          "Content-Type": " application/json",
+          //   Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response) {
+        const result = await response.json();
+
+        if (result.result) 
+          {
+          setSuccess(result.message);
+          setTimeout(() => {
+            setSuccess("");
+          }, 2000);
+
+          dispatch(reloading(!reload));
+        } else {
+          setErrors((prev) => [...prev, result.error]);
+        }
+        console.log(result);
+      }
+    })();
   };
 
   /**
@@ -74,8 +202,6 @@ export default function Form({ schema }) {
     // setAddedSteps(toKeep);
     setEditStep(element);
   };
-
-
 
   /**
    * Affichage du titre de page
@@ -113,49 +239,89 @@ export default function Form({ schema }) {
                   {...input}
                   required={input.required}
                   key={input.field}
-                  className="border w-1/2 text-black px-1"
+                  className={
+                    errors.includes(input.field)
+                      ? "border-red-500 border-2 w-1/2 text-black px-1"
+                      : "border w-1/2 text-black px-1"
+                  }
                   type={input.type}
                   onChange={(e) => handleChange(e)}
-                  value={formData[input.field]}
+                  value={
+                    formData[input.field] !== undefined
+                      ? formData[input.field]
+                      : ""
+                  }
                   placeholder={`Saisir ${input.placeholder}`}
-                  defaultValue={input.default}
+                  // defaultValue={input.default}
                 />
               )}
             {/* // afficher les choices de catégories */}
             {/* // requeter le back , restituer les datas triées par nom formatés */}
             {input.type == "entity" && (
               <select
+                {...input}
                 key={input.field}
-                className="border w-1/2 text-black px-1"
-                value={formData[input.field]}
+                // className={errors.find((e)=> e == input.field ? "border-red-500 border w-1/2 text-black px-1" : "border w-1/2 text-black px-1" )}
+                className={
+                  errors.includes(input.field)
+                    ? "border-red-500 border-2 w-1/2 text-black px-1"
+                    : "border w-1/2 text-black px-1"
+                }
+                value={
+                  formData[input.field] !== undefined
+                    ? formData[input.field]
+                    : "selector"
+                }
                 onChange={(e) => handleChange(e)}
                 field={input.field}
               >
-                <GetSelectableDatas counter={i} source={input.entity} valueinselect={input.valueinselect} displayinselect={input.displayinselect}/>
+                <GetSelectableDatas
+                  counter={i}
+                  source={input.entity}
+                  valueinselect={input.valueinselect}
+                  displayinselect={input.displayinselect}
+                />
               </select>
             )}
 
             {input.type == "longtext" && (
               <textarea
+                {...input}
                 key={input.field}
-                className="border w-1/2 text-black px-1"
-                value={formData[input.field]}
+                className={
+                  errors.includes(input.field)
+                    ? "border-red-500 border-2 w-1/2 text-black px-1"
+                    : "border w-1/2 text-black px-1"
+                }
+                value={
+                  formData[input.field] !== undefined
+                    ? formData[input.field]
+                    : ""
+                }
                 placeholder={`Saisir ${input.placeholder}`}
                 onChange={(e) => handleChange(e)}
                 field={input.field}
-              >
-  
-              </textarea>
+              ></textarea>
             )}
 
             {input.type == "boolean" && (
-              <div className="h-1/4">
-                <input type='checkbox'
-                key={input.field}
-                checked={formData[input.field]}
-                onChange={(e) => handleChange(e)}
-                defaultChecked={formData[input.field]}
-                field={input.field}
+              <div className="h-1/4 w-1/2">
+                <input
+                  type="checkbox"
+                  className={
+                    errors.includes(input.field)
+                      ? "appearance-none w-4 h-4 border-2 border-red-500 bg-white"
+                      : "shadow-lg"
+                  }
+                  key={input.field}
+                  checked={
+                    formData[input.field] !== undefined
+                      ? formData[input.field]
+                      : false
+                  }
+                  onChange={(e) => handleChange(e)}
+                  defaultChecked={formData[input.field]}
+                  field={input.field}
                 />
               </div>
             )}
@@ -186,9 +352,7 @@ export default function Form({ schema }) {
                           <div className="w-full h-full my-2">
                             <span className="font-bold">Etape {i + 1} :</span>{" "}
                             {editStep == i && (
-                              <textarea 
-                              className="w-full h-48 border-2 border-green-900 p-1"
-                              >
+                              <textarea className="w-full h-48 border-2 border-green-900 p-1">
                                 {e}
                               </textarea>
                             )}
@@ -266,21 +430,38 @@ export default function Form({ schema }) {
         ))
       : null
   );
+
+  const displayErrors = [];
+
+  if (errors) {
+    errors.map((error, i) =>
+      displayErrors.push(
+        <li className="text-red-500" key={i}>
+          {error}
+        </li>
+      )
+    );
+  }
+
   return (
-    <div className="border w-[50vw] p-2 my-2">
+    <div className="border w-[50%] p-2 my-2">
       {displayLabel}
-      <form onSubmit={(e)=>handleSubmit(e)}>
+      <form onSubmit={(e) => handleSubmit(e)}>
         {displayInputs}
         <div className="w-full text-center">
-          <button
-         
-           
-            className="border mt-2 p-2 px-5 bg-slate-400 hover:bg-slate-600 hover:text-white transition-all"
-          >
+          <button className="border mt-2 p-2 px-5 bg-slate-400 hover:bg-slate-600 hover:text-white transition-all">
             Valider
           </button>
         </div>
       </form>
+      <div className="w-full border mt-2 p-2 flex items-center justify-center">
+        <div>
+          {errors.length > 0 && <ul>Vérifier les champs : </ul>}
+          {displayErrors}
+        </div>
+
+        <div className="text-green-500">{success}</div>
+      </div>
     </div>
   );
 }

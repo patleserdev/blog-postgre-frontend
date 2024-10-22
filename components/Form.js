@@ -444,7 +444,7 @@ export default function Form({ schema }) {
   }
 
   return (
-    <div className="border w-[50%] p-2 my-2">
+    <div className="border w-full p-2 my-2">
       {displayLabel}
       <form onSubmit={(e) => handleSubmit(e)}>
         {displayInputs}

@@ -35,7 +35,8 @@ export default function Getdatas({ source,inputs,identifier }) {
            let widthResizer=(100/inputs.length)
   
            inputs.map((input,i) =>  content.push(<td className={`w-[${widthResizer}%] capitalize`} key={"td"+i} >
-            {decodeURI(data[input])}
+            {decodeURI(data[input]).length < 20 ? decodeURI(data[input]) : decodeURI(data[input]).slice(0,25)+'...' } 
+            
             </td>) )   
             content.push(<td key={i}><Editbutton source={source} id={data[identifier]}/> <Deletebutton source={source}  id={data[identifier]}/></td>)
            displayDatas.push(<tr key={i}>{content}</tr>)

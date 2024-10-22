@@ -15,7 +15,7 @@ export default function List({ schema }) {
     // const displayinselect=  datas.map((e)=> e.source == schema ? e.displayinselect : null)
 
   return (
-    <div className="border min-w-[50vw] p-2 mt-5">
+    <div className="border min-w-[50vw] p-2 mt-5 z-0">
       {displayLabel}
       <h4>
         Filtrer par <input type="text" />

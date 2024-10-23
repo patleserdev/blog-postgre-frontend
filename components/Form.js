@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { datas } from "../datas";
 import GetSelectableDatas from "./GetSelectableDatas";
 import Fileupload from "./Fileupload";
@@ -12,22 +12,38 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { useSelector, useDispatch } from "react-redux";
-import { reloading } from '../reducers/reloader';
+import { reloading } from "../reducers/reloader";
 import { deleteFile } from "../reducers/file";
+import { openModal } from "../reducers/modal";
 
 export default function Form({ schema }) {
   const BACKEND_URL = "http://localhost:3000";
+  const dispatch = useDispatch();
+  const reload = useSelector((state) => state.reloader.value);
+  const file = useSelector((state) => state.file.value);
+  const entity = useSelector((state) => state.entity.value);
 
-  const [formData, setFormData] = useState([]);
+  const [formData, setFormData] = useState(entity ? entity : []);
   const [addedSteps, setAddedSteps] = useState([]);
   const [stepInput, setStepInput] = useState("");
   const [editStep, setEditStep] = useState(null);
   const [errors, setErrors] = useState([]);
   const [success, setSuccess] = useState([]);
+  const [toEdit, setToEdit] = useState(entity ? true : false);
+  const [identifier, setIdentifier] = useState("");
 
-  const dispatch = useDispatch();
-  const reload = useSelector((state) => state.reloader.value);
-  const file = useSelector((state) => state.file.value);
+  useEffect(() => {
+    getIdentifier();
+  }, []);
+
+  /**
+   *  Définit identifier
+   */
+  const getIdentifier = async () => {
+    return datas.filter((data) =>
+      data.source == schema ? setIdentifier(data.identifier) : null
+    );
+  };
 
   /**
    *  mise à jour du formulaire
@@ -100,74 +116,106 @@ export default function Form({ schema }) {
    *  Envoi des données au backend
    */
   const handlePush = async () => {
+    const uploadResult = await uploadImage();
+    console.log("formdata avant push", formData);
+    console.log("uploadResult", uploadResult);
 
+    if (uploadResult?.result) {
+      const updatedFormData = {
+        ...formData,
+        picture_url: uploadResult.url,
+        public_id: uploadResult.publicid,
+      };
+      console.log('updatedformdata',updatedFormData)
+
+      setFormData(updatedFormData);
+      
+      dispatch(deleteFile(null));
+      await addPost(updatedFormData);
+    } else if (!file) {
+      await addPost(formData);
+    }
+  };
+
+  /**
+   *  Ajout d'une image au post
+   */
+  const uploadImage = async () => {
     if (file) {
       const formDataToUpload = new FormData();
       formDataToUpload.append("file", file[0], file[0].name);
+
       try {
         const response = await fetch(`${BACKEND_URL}/${schema}/addfile`, {
           method: "POST",
-          
+
           // credentials: 'include' ,
           headers: {
             // Content-Type: "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            // Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           body: formDataToUpload,
-          
         });
 
-        if (response) 
-        {
+        if (response) {
           const result = await response.json();
-          console.log("addfile result",result);
-             setFormData((prev) => ({
-            ...prev,
-            ['picture_url']: result.url,['public_id']: result.publicid,
-          }));
-        }
-        else 
-        {
-          console.error("Error uploading file:"+ response.statusText);
-          setErrors((prev) => [...prev, "Error uploading file:"+ response.statusText]);
-        }
-      }
-      catch (error) {
-        console.error("Network error:", error);
-        setErrors((prev) => [...prev, "Network error:"+ error]);
+          console.log("addfile result", result);
 
-      
+          return result;
+        } else {
+          console.error("Error uploading file:" + response.statusText);
+          setErrors((prev) => [
+            ...prev,
+            "Error uploading file:" + response.statusText,
+          ]);
+          return null;
+        }
+      } catch (error) {
+        console.error("Network error:", error);
+        setErrors((prev) => [...prev, "Network error:" + error]);
+        return null;
       }
     }
+  };
 
-    (async () => {
-      const response = await fetch(`${BACKEND_URL}/${schema}`, {
-        method: "POST",
-        headers: {
-          // Content-Type: "multipart/form-data",
-          "Content-Type": " application/json",
-          //   Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(formData),
-      });
+  /**
+   *  Ajout du post au backend
+   */
+  const addPost = async (formData) => {
+    console.log("formdata en cours de route", formData);
 
-      if (response) {
-        const result = await response.json();
+    let entityToEdit = ``;
+    if (entity) {
+      entityToEdit = `/${entity[identifier]}`;
+    }
 
-        if (result.result) 
-          {
-          setSuccess(result.message);
-          setTimeout(() => {
-            setSuccess("");
-          }, 2000);
+    const response = await fetch(`${BACKEND_URL}/${schema}${entityToEdit}`, {
+      method: !toEdit ? "POST" : "PUT",
+      headers: {
+        // Content-Type: "multipart/form-data",
+        "Content-Type": " application/json",
+        //   Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(formData),
+    });
 
-          dispatch(reloading(!reload));
-        } else {
-          setErrors((prev) => [...prev, result.error]);
-        }
-        console.log(result);
+    if (response) {
+      const result = await response.json();
+
+      if (result.result) {
+        setSuccess(result.message);
+        setTimeout(() => {
+          setSuccess("");
+        }, 2000);
+
+        dispatch(reloading(!reload));
+        dispatch(deleteFile(null));
+        dispatch(openModal(false));
+      } else {
+        setErrors((prev) => [...prev, result.error]);
       }
-    })();
+      console.log("addpostresult", result);
+    }
   };
 
   /**
@@ -208,7 +256,7 @@ export default function Form({ schema }) {
    */
   const displayLabel = datas.map((e, i) =>
     e.source == schema ? (
-      <h2 key={i} className="text-lg">
+      <h2 key={i} className="text-2xl p-1 px-2 mb-5">
         Ajouter {e.label}
       </h2>
     ) : null
@@ -222,10 +270,7 @@ export default function Form({ schema }) {
   const displayInputs = datas.map((e) =>
     e.source == schema
       ? e.inputs.map((input, i) => (
-          <div
-            key={i}
-            className="flex items-center justify-around  my-2 p-2 border"
-          >
+          <div key={i} className="flex items-center justify-around  my-2 p-2">
             <label htmlFor={input.name} className="w-1/2 capitalize text-md">
               {input.label}
             </label>
@@ -234,21 +279,22 @@ export default function Form({ schema }) {
               input.type != "upload" &&
               input.type != "boolean" &&
               input.type != "longtext" &&
-              input.type != "steps" && (
+              input.type != "steps" &&
+              input.type != "none" && (
                 <input
                   {...input}
                   required={input.required}
                   key={input.field}
                   className={
                     errors.includes(input.field)
-                      ? "border-red-500 border-2 w-1/2 text-black px-1"
-                      : "border w-1/2 text-black px-1"
+                      ? "border-red-500 border-1 w-1/2 text-black px-1"
+                      : "w-1/2 text-black px-1"
                   }
                   type={input.type}
                   onChange={(e) => handleChange(e)}
                   value={
                     formData[input.field] !== undefined
-                      ? formData[input.field]
+                      ? decodeURI(formData[input.field])
                       : ""
                   }
                   placeholder={`Saisir ${input.placeholder}`}
@@ -259,22 +305,30 @@ export default function Form({ schema }) {
             {/* // requeter le back , restituer les datas triées par nom formatés */}
             {input.type == "entity" && (
               <select
-                {...input}
                 key={input.field}
-                // className={errors.find((e)=> e == input.field ? "border-red-500 border w-1/2 text-black px-1" : "border w-1/2 text-black px-1" )}
+                name={input.field}
                 className={
                   errors.includes(input.field)
                     ? "border-red-500 border-2 w-1/2 text-black px-1"
-                    : "border w-1/2 text-black px-1"
+                    : "w-1/2 text-black px-1 capitalize h-8"
                 }
+                // value={
+                //   formData[input.field] != undefined
+                //     ? formData[input.field]
+                //     : ""
+                // }
                 value={
-                  formData[input.field] !== undefined
+                  formData[input.field]
                     ? formData[input.field]
-                    : "selector"
+                    : formData[input.field] || ""
                 }
                 onChange={(e) => handleChange(e)}
                 field={input.field}
               >
+                <option value="" disabled>
+                  Sélectionnez une catégorie
+                </option>
+
                 <GetSelectableDatas
                   counter={i}
                   source={input.entity}
@@ -291,11 +345,11 @@ export default function Form({ schema }) {
                 className={
                   errors.includes(input.field)
                     ? "border-red-500 border-2 w-1/2 text-black px-1"
-                    : "border w-1/2 text-black px-1"
+                    : "w-1/2 text-black px-1"
                 }
                 value={
                   formData[input.field] !== undefined
-                    ? formData[input.field]
+                    ? decodeURI(formData[input.field])
                     : ""
                 }
                 placeholder={`Saisir ${input.placeholder}`}
@@ -311,23 +365,20 @@ export default function Form({ schema }) {
                   className={
                     errors.includes(input.field)
                       ? "appearance-none w-4 h-4 border-2 border-red-500 bg-white"
-                      : "shadow-lg"
+                      : "shadow-lg h-4 w-4"
                   }
                   key={input.field}
-                  checked={
-                    formData[input.field] !== undefined
-                      ? formData[input.field]
-                      : false
-                  }
                   onChange={(e) => handleChange(e)}
-                  defaultChecked={formData[input.field]}
+                  defaultChecked={
+                    formData[input.field] ? formData[input.field] : false
+                  }
                   field={input.field}
                 />
               </div>
             )}
 
             {input.type == "upload" && (
-              <div className="h-1/4">
+              <div className="border h-1/4">
                 <Fileupload />
               </div>
             )}
@@ -454,7 +505,7 @@ export default function Form({ schema }) {
           </button>
         </div>
       </form>
-      <div className="w-full border mt-2 p-2 flex items-center justify-center">
+      <div className="w-full mt-2 p-2 flex items-center justify-center">
         <div>
           {errors.length > 0 && <ul>Vérifier les champs : </ul>}
           {displayErrors}

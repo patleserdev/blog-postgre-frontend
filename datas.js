@@ -186,7 +186,14 @@ export const datas=[
       field:'picture_url',
       type:'upload',
       required:false,
-      placeholder:'Cocher s\'il est détruit'
+      placeholder:'Ajoute l\'image'
+     }
+     ,{
+      label:'Image',
+      field:'public_id',
+      type:'none',
+      required:false,
+      
      }
   ]
 },

@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "next/legacy/image";
 import localFont from "next/font/local";
 import Navbar from "@/components/Navbar";
 import Head from "next/head.js";
@@ -50,22 +50,24 @@ export default function Home() {
               alt="bg"
               src={"/assets/header_bg.jpg"}
               layout="fill"
-              style={{ objectFit: "cover" }}
+            
               priority
             />
           </div>
 
           <div className="w-full min-h-[100vh] z-10">
-            {categories.map((e) => (
-              <>
-              <div className="shadow-sm shadow-slate-500 text-3xl bg-slate-800 p-2  w-1/4 m-2 flex flex-row items-center justify-start">
+            {categories.map((e,i) => (
+              <div key={i}>
+              <div  className="shadow-sm shadow-slate-500 text-3xl bg-slate-800 p-2  w-1/4 m-2 flex flex-row items-center justify-start">
                  <FontAwesomeIcon className="w-8" icon={faSquareCaretRight} size='lg'/>
                 <h3 className="capitalize w-1/4 mx-4">
                  {decodeURI(e.title)}
                  </h3>
               </div>
+           
               <Getposts categorie={e.categorie_id}/>
-              </>
+    
+              </div>
             ))}
           </div>
         </main>

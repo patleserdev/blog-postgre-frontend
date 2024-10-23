@@ -24,7 +24,7 @@ const FileUpload = () => {
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles) => {
       // setUploadedFiles(acceptedFiles);
-      dispatch(addFile(acceptedFiles))
+      dispatch(addFile({...acceptedFiles}))
       setFiles(
         acceptedFiles.map((file) =>
           Object.assign(file, {

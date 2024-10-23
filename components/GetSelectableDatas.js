@@ -26,7 +26,7 @@ export default function GetSelectableDatas({ source,counter,valueinselect,displa
     },[])
 
     const displayDatas=[]
-    displayDatas.push(<option value="selector" disabled key="selector">Sélectionnez</option>)
+    // displayDatas.push(<option value="" disabled key="selector">Sélectionnez</option>)
     // datas.map((e)=> displayDatas.push({value:e,label:e}))
     datas.map((e,i)=> displayDatas.push(<option className="capitalize" key={counter+i} value={e.value}>{e.display}</option>))
 

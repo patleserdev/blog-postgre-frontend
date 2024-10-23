@@ -13,10 +13,9 @@ export const fileSlice = createSlice({
      state.value=action.payload;
    },
    deleteFile: (state, action) => {
-    if(action.payload)
-    {
+
       state.value=null;
-    }
+    
     
   },
 

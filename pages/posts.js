@@ -20,7 +20,8 @@ const Posts = () => {
     <Head>
       <title>Blogger - Posts</title>
     </Head>
-    <div className="grid grid-rows-[20px_1fr_20px] items-start justify-items-start min-h-screen p-8 pb-20 gap-16 sm:p-10 font-[family-name:var(--font-geist-sans)]">
+    {/* <div className="grid grid-rows-[20px_1fr_20px] items-start justify-items-start min-h-screen p-8 pb-20 gap-16 sm:p-10 font-[family-name:var(--font-geist-sans)]"> */}
+    <div className="font-[family-name:var(--font-geist-sans)]">
       <Navbar/>
       <main className="w-full flex flex-col items-center justify-center z-1">
         <h1 className="text-2xl underline">Posts :</h1>

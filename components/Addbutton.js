@@ -14,7 +14,7 @@ export default function Addbutton({ id, source }) {
     <>
       <button
         onClick={() => handleToAdd()}
-        className="w-full p-2 px-1 border hover:bg-slate-500 transition-all"
+        className="w-full text-lg p-2 px-1 border hover:bg-slate-500 transition-all"
       >
         Ajouter
       </button>

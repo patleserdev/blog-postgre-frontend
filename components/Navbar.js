@@ -13,7 +13,7 @@ export default function Navbar() {
 
           <header className=" p-2 relative w-full h-24 flex flex-row justify-between items-center">
           <div>
-            <Image alt="logo" src='/assets/logo-light.png' width={100}height={100}/>
+            <Image alt="logo" src='/assets/logo-light.png' width={100}height={100} priority/>
           </div>
           <div className="w-3/4">
           <ul className="relative flex flex-row w-full items-center justify-around p-2">

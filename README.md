@@ -1,6 +1,6 @@
 # blog-postgre-frontend
 Partie frontend pour afficher le blog développé avec une bdd postegreSQL
-Système de formulaire dynamique : se base sur un fichier de structure correspondant aux données attendues en bdd => reusableForm
+### Système de formulaire dynamique : se base sur un fichier de structure correspondant aux données attendues en bdd => reusableForm
 
 ## Fonctionnalités
 + Home affichant des articles sous forme de card par catégorie
@@ -22,7 +22,7 @@ Système de formulaire dynamique : se base sur un fichier de structure correspon
 + Ajout des commentaires aux articles si utilisateur connecté
 
 ## Mes réussites techniques
-+ Formulaire géré dynamiquement dans React , basé sur un fichier de datas structuré, pour exemple :
++ Formulaire géré dynamiquement dans React, basé sur un fichier de datas structuré, pour exemple :
 ```
 {
   source:'articles',

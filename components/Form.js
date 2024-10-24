@@ -10,7 +10,7 @@ import {
   faPenToSquare,
   faCircleCheck,
 } from "@fortawesome/free-solid-svg-icons";
-
+import Editor from 'react-simple-wysiwyg';
 import { useSelector, useDispatch } from "react-redux";
 import { reloading } from "../reducers/reloader";
 import { deleteFile } from "../reducers/file";
@@ -50,13 +50,23 @@ export default function Form({ schema }) {
    */
   const handleChange = (e) => {
     // version boolean
-    // console.log(e.target.attributes.field.value,e.target.checked)
+    // console.log(e)
+
     if (e.target.type == "checkbox") {
       setFormData((prev) => ({
         ...prev,
         [e.target.attributes.field.value]: e.target.checked,
       }));
-    } else {
+    } 
+    else if(e.currentTarget.attributes[0].nodeValue == "longtext")
+    {
+      setFormData((prev) => ({
+        ...prev,
+        [e.target.name]: e.target.value,
+      }));
+    }
+    
+    else {
       setFormData((prev) => ({
         ...prev,
         [e.target.attributes.field.value]: e.target.value,
@@ -99,7 +109,7 @@ export default function Form({ schema }) {
         if (formData[input] == "" || formData[input] == " ") {
           fieldErrors.push(input);
         } else {
-          console.log(input, "ok");
+          // console.log(input, "ok");
         }
       }
     }
@@ -117,8 +127,8 @@ export default function Form({ schema }) {
    */
   const handlePush = async () => {
     const uploadResult = await uploadImage();
-    console.log("formdata avant push", formData);
-    console.log("uploadResult", uploadResult);
+    // console.log("formdata avant push", formData);
+    // console.log("uploadResult", uploadResult);
 
     if (uploadResult?.result) {
       const updatedFormData = {
@@ -126,7 +136,7 @@ export default function Form({ schema }) {
         picture_url: uploadResult.url,
         public_id: uploadResult.publicid,
       };
-      console.log('updatedformdata',updatedFormData)
+      // console.log('updatedformdata',updatedFormData)
 
       setFormData(updatedFormData);
       
@@ -159,11 +169,11 @@ export default function Form({ schema }) {
 
         if (response) {
           const result = await response.json();
-          console.log("addfile result", result);
+          // console.log("addfile result", result);
 
           return result;
         } else {
-          console.error("Error uploading file:" + response.statusText);
+          // console.error("Error uploading file:" + response.statusText);
           setErrors((prev) => [
             ...prev,
             "Error uploading file:" + response.statusText,
@@ -171,7 +181,7 @@ export default function Form({ schema }) {
           return null;
         }
       } catch (error) {
-        console.error("Network error:", error);
+        // console.error("Network error:", error);
         setErrors((prev) => [...prev, "Network error:" + error]);
         return null;
       }
@@ -182,7 +192,7 @@ export default function Form({ schema }) {
    *  Ajout du post au backend
    */
   const addPost = async (formData) => {
-    console.log("formdata en cours de route", formData);
+    // console.log("formdata en cours de route", formData);
 
     let entityToEdit = ``;
     if (entity) {
@@ -214,7 +224,7 @@ export default function Form({ schema }) {
       } else {
         setErrors((prev) => [...prev, result.error]);
       }
-      console.log("addpostresult", result);
+      // console.log("addpostresult", result);
     }
   };
 
@@ -256,7 +266,7 @@ export default function Form({ schema }) {
    */
   const displayLabel = datas.map((e, i) =>
     e.source == schema ? (
-      <h2 key={i} className="text-2xl p-1 px-2 mb-5">
+      <h2 key={i} className="text-2xl p-1 px-2 mb-1">
         Ajouter {e.label}
       </h2>
     ) : null
@@ -271,7 +281,7 @@ export default function Form({ schema }) {
     e.source == schema
       ? e.inputs.map((input, i) => (
           <div key={i} className="flex items-center justify-around  my-2 p-2">
-            <label htmlFor={input.name} className="w-1/2 capitalize text-md">
+            <label htmlFor={input.name} className="w-1/3 capitalize text-md">
               {input.label}
             </label>
 
@@ -288,7 +298,7 @@ export default function Form({ schema }) {
                   className={
                     errors.includes(input.field)
                       ? "border-red-500 border-1 w-1/2 text-black px-1"
-                      : "w-1/2 text-black px-1"
+                      : "w-2/3 text-black px-1"
                   }
                   type={input.type}
                   onChange={(e) => handleChange(e)}
@@ -339,23 +349,41 @@ export default function Form({ schema }) {
             )}
 
             {input.type == "longtext" && (
-              <textarea
-                {...input}
-                key={input.field}
-                className={
-                  errors.includes(input.field)
-                    ? "border-red-500 border-2 w-1/2 text-black px-1"
-                    : "w-1/2 text-black px-1"
-                }
-                value={
-                  formData[input.field] !== undefined
-                    ? decodeURI(formData[input.field])
-                    : ""
-                }
-                placeholder={`Saisir ${input.placeholder}`}
+              // <textarea
+              //   {...input}
+              //   key={input.field}
+              //   className={
+              //     errors.includes(input.field)
+              //       ? "border-red-500 border-2 w-1/2 text-black px-1"
+              //       : "w-1/2 text-black px-1"
+              //   }
+              //   value={
+              //     formData[input.field] !== undefined
+              //       ? decodeURI(formData[input.field])
+              //       : ""
+              //   }
+              //   placeholder={`Saisir ${input.placeholder}`}
+              //   onChange={(e) => handleChange(e)}
+              //   field={input.field}
+              // ></textarea>
+              <Editor 
+              type={input.type}
+              {...input}
+              name={input.field}
+              key={input.field}
+              className={
+                    errors.includes(input.field)
+                      ? "border-red-500 border-2 w-1/2 text-black px-1"
+                      : "w-1/2 bg-white text-black px-1"
+                  }
+              placeholder={`Saisir ${input.placeholder}`}
+              value={ formData[input.field] !== undefined
+                ? decodeURI(formData[input.field])
+                : ""} 
                 onChange={(e) => handleChange(e)}
                 field={input.field}
-              ></textarea>
+                />
+             
             )}
 
             {input.type == "boolean" && (
@@ -495,7 +523,7 @@ export default function Form({ schema }) {
   }
 
   return (
-    <div className="border w-full p-2 my-2">
+    <div className="border w-full p-1">
       {displayLabel}
       <form onSubmit={(e) => handleSubmit(e)}>
         {displayInputs}

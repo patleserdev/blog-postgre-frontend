@@ -5,7 +5,7 @@ export default function List({ schema }) {
 
     const displayLabel=datas.map((e,i)=> e.source == schema ? <h2 key={i} className="text-lg">Liste des {e.label}</h2> : null)
 
-    const displayHead=datas.map((e,i)=> e.source == schema ? e.inputs.map((input,i)=> <th className="capitalize" key={i}>{input.label}</th>) : null)
+    const displayHead=datas.map((e,i)=> e.source == schema ? e.inputs.map((input,i)=> <th className="text-left capitalize p-2" key={i}>{input.label}</th>) : null)
 
     displayHead.push(<th key={999} className="text-center">Actions</th>)
     const inputs=[]
@@ -15,7 +15,7 @@ export default function List({ schema }) {
     // const displayinselect=  datas.map((e)=> e.source == schema ? e.displayinselect : null)
 
   return (
-    <div className="border min-w-[50vw] p-2 mt-5 z-0">
+    <div className="border w-full p-2 mt-5 z-0">
       {displayLabel}
       <h4>
         Filtrer par <input type="text" />

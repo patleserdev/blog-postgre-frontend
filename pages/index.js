@@ -55,12 +55,12 @@ export default function Home() {
             />
           </div>
 
-          <div className="w-full min-h-[100vh] z-10">
+          <div className="w-full min-h-[100vh] z-10 my-5">
             {categories.map((e,i) => (
               <div key={i}>
-              <div  className="shadow-sm shadow-slate-500 text-3xl bg-slate-800 p-2  w-1/4 m-2 flex flex-row items-center justify-start">
+              <div  className="shadow-sm shadow-slate-500 text-3xl bg-slate-800 p-2  w-1/4 mx-5 flex flex-row items-center justify-start">
                  <FontAwesomeIcon className="w-8" icon={faSquareCaretRight} size='lg'/>
-                <h3 className="capitalize w-1/4 mx-4">
+                <h3 className="capitalize w-1/4 mx-2" >
                  {decodeURI(e.title)}
                  </h3>
               </div>
@@ -72,7 +72,7 @@ export default function Home() {
           </div>
         </main>
         <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-          <p>Test PostgreSQL</p>
+          <p>Copyright 2024 - P.Leservoisier</p>
         </footer>
       </div>
     </>

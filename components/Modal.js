@@ -17,10 +17,10 @@ export default function Modal({schema}) {
     }
   return (
     <div
-      className="absolute top-0 left-0 w-full
+      className="fixed top-0 left-0 w-full
     min-h-full flex flex-row items-center justify-center bg-black opacity-95"
     >
-        <div className="bg-black relative w-1/2 p-5
+        <div className="bg-black relative w-1/2
     min-h-full flex items-center opacity-100 justify-center text-white">
         <Form schema={schema}/>
 

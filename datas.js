@@ -188,13 +188,13 @@ export const datas=[
       required:false,
       placeholder:'Ajoute l\'image'
      }
-     ,{
-      label:'Image',
-      field:'public_id',
-      type:'none',
-      required:false,
+    //  ,{
+    //   label:'Public_ID',
+    //   field:'public_id',
+    //   type:'none',
+    //   required:false,
       
-     }
+    //  }
   ]
 },
 {

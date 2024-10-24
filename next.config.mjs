@@ -2,10 +2,17 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    remotePatterns: [
+    dangerouslyAllowSVG:true,
+    remotePatterns: [  
       {
         protocol: 'https',
         hostname: 'res.cloudinary.com',
+        port: '',
+        
+      },
+      {
+        protocol: 'https',
+        hostname: 'placehold.co',
         port: '',
         
       },

@@ -34,11 +34,11 @@ export default function Getdatas({ source,inputs,identifier }) {
            let content=[]
            let widthResizer=(100/inputs.length)
   
-           inputs.map((input,i) =>  content.push(<td className={`w-[${widthResizer}%] capitalize`} key={"td"+i} >
-            {decodeURI(data[input]).length < 20 ? decodeURI(data[input]) : decodeURI(data[input]).slice(0,25)+'...' } 
+           inputs.map((input,i) =>  content.push(<td className={`w-[${widthResizer}%] capitalize p-2`} key={"td"+i} >
+            {decodeURI(data[input]).length < 20 ? decodeURI(data[input]) : decodeURI(data[input]).slice(0,100)+'...' } 
             
             </td>) )   
-            content.push(<td className="w-[30%]" key={i}><Editbutton source={source} entity={data}/> <Deletebutton source={source}  id={data[identifier]}/></td>)
+            content.push(<td className="p-2 w-[30%]" key={i}><Editbutton source={source} entity={data}/> <Deletebutton source={source}  id={data[identifier]}/></td>)
            displayDatas.push(<tr key={i}>{content}</tr>)
            i++
        }
@@ -48,7 +48,7 @@ export default function Getdatas({ source,inputs,identifier }) {
     return (
     <>
         {displayDatas.length > 0 && displayDatas}
-        {displayDatas.length == 0 && <tr className="border text-center my-5"><td colSpan={inputs.length}>Aucun enregistrement</td></tr>}
+        {displayDatas.length == 0 && <tr className="border text-center my-5 p-2"><td colSpan={inputs.length}>Aucun enregistrement</td></tr>}
 
     </>
     

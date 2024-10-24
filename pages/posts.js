@@ -29,9 +29,10 @@ const Posts = () => {
         <Addbutton/>
         </div>
         
-        {/* <Form schema={schema} /> */}
-
+       
         <List schema={schema} />
+    
+        
         
         {openModal &&
         <div className="z-5">

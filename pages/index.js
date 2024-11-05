@@ -17,12 +17,12 @@ const geistMono = localFont({
 });
 
 export default function Home() {
+  // const BACKEND_URL='http://localhost:3000'
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
   const [categories, setCategories] = useState([]);
 
   const getCategories = async () => {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/postcategories`
-    );
+    const response = await fetch(`${BACKEND_URL}/postcategories`);
 
     const result = await response.json();
 

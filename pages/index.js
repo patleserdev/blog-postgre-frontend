@@ -23,9 +23,12 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   const getCategories = async () => {
     const response = await fetch(`${BACKEND_URL}/postcategories`,{
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
+      
+
     });
 
     const result = await response.json();

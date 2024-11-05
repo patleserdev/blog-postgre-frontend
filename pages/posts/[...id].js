@@ -2,22 +2,18 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Image from "next/legacy/image.js";
 import Navbar from "@/components/Navbar.js";
-import AddaLittleBitOfData from "@/components/AddaLittleBitOfData.js";
 import { useSelector, useDispatch } from "react-redux";
-import { openModal } from '@/reducers/modal';
 import Modal from "@/components/Modal.js";
 import Form from "@/components/Form.js";
 import { addEntity } from "@/reducers/entity";
 import CommentsListByPost from "@/components/CommentsListByPost.js";
-
+import Footer from "@/components/Footer.js";
 
 
 export default function Post() {
   const dispatch = useDispatch();
   const router = useRouter();
   const openModal = useSelector((state) => state.modal.value);
-  const reload = useSelector((state) => state.reloader.value);
-  const entity = useSelector((state) => state.entity.value);
   const [article, setArticle] = useState(null);
   const schema = "comments";
   const except=['isarchived','isdestroyed']
@@ -104,6 +100,7 @@ export default function Post() {
         }
 
       </main>
+      <Footer/>
     </div>
   );
 }

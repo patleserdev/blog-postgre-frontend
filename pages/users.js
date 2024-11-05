@@ -4,8 +4,8 @@ import Addbutton from "@/components/Addbutton.js";
 import Navbar from "@/components/Navbar";
 import Head from "next/head.js";
 import Modal from "@/components/Modal";
-import { useSelector, useDispatch } from "react-redux";
-import { openModal } from '../reducers/modal';
+import { useSelector } from "react-redux";
+import Footer from "@/components/Footer.js";
 
 export const metadata = {
   title: "Blog - Utilisateurs",
@@ -25,21 +25,18 @@ const Users = () => {
         <main className="w-full flex flex-col items-center justify-center">
           <h1 className="text-2xl underline">Utilisateurs :</h1>
           <div className="border w-1/4 mt-2">
-          <Addbutton>
-                  Ajouter
-          </Addbutton>
+            <Addbutton>Ajouter</Addbutton>
           </div>
-        
 
           <List schema={schema} />
 
-          {openModal &&
-        <div className="z-5">
-        <Modal schema={schema}/>
-        </div>}
-
+          {openModal && (
+            <div className="z-5">
+              <Modal schema={schema} />
+            </div>
+          )}
         </main>
-        <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center"></footer>
+        <Footer />
       </div>
     </>
   );

@@ -1,14 +1,10 @@
-import Image from "next/legacy/image";
 import localFont from "next/font/local";
 import Navbar from "@/components/Navbar";
 import Head from "next/head.js";
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSquareCaretRight} from '@fortawesome/free-solid-svg-icons';
-
 import Getposts from "@/components/Getposts";
-
 import { useEffect, useState } from "react";
+import Footer from "@/components/Footer.js";
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -21,11 +17,12 @@ const geistMono = localFont({
 });
 
 export default function Home() {
-
   const [categories, setCategories] = useState([]);
 
   const getCategories = async () => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/postcategories`);
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/postcategories`
+    );
 
     const result = await response.json();
 
@@ -57,19 +54,19 @@ export default function Home() {
           </div> */}
 
           <div className="w-full min-h-[100vh] z-10 my-5">
-            {categories != undefined && categories.map((e,i) => (
-              <div key={i}>
-                
-           
-              <Getposts incrementer={e.categorie_id+i} categorie={e.categorie_id} title={e.title}/>
-    
-              </div>
-            ))}
+            {categories != undefined &&
+              categories.map((e, i) => (
+                <div key={i}>
+                  <Getposts
+                    incrementer={e.categorie_id + i}
+                    categorie={e.categorie_id}
+                    title={e.title}
+                  />
+                </div>
+              ))}
           </div>
         </main>
-        <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-          <p>Copyright 2024 - P.Leservoisier</p>
-        </footer>
+        <Footer />
       </div>
     </>
   );

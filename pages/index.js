@@ -22,7 +22,11 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
   const [categories, setCategories] = useState([]);
 
   const getCategories = async () => {
-    const response = await fetch(`${BACKEND_URL}/postcategories`);
+    const response = await fetch(`${BACKEND_URL}/postcategories`,{
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
     const result = await response.json();
 

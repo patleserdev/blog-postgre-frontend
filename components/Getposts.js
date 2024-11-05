@@ -1,42 +1,91 @@
 import { useEffect, useState } from "react";
-import Image from "next/legacy/image.js";
-export default function Getposts({ categorie }) {
+import HoveredCardWithLink from "./HoveredCardWithLink";
+import ClassicCardWithLink from "./ClassicCardWithLink.js";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
+
+export default function Getposts({ categorie, incrementer, title }) {
+
+  // const BACKEND_URL = 'http://localhost:3000';
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const [prev, setPrev] = useState(0);
+  const [next, setNext] = useState(0);
   const [posts, setPosts] = useState([]);
+
   const getposts = async () => {
     const response = await fetch(
-      `http://localhost:3000/posts/bycategory/${categorie}`
+      `${BACKEND_URL}/posts/bycategory/${categorie}`
     );
 
     const result = await response.json();
     // console.log(result)
     if (result) {
-        
       setPosts(result.data);
     }
   };
 
-  useEffect(()=>{
-        getposts()
-  },[])
+  useEffect(() => {
+    getposts();
+    setPrev(0);
+    setNext(3);
+  }, []);
+
+  const handlePrev = () => {
+    setPrev(prev - 1);
+    setNext(next - 1);
+  };
+
+  const handleNext = () => {
+    setPrev(prev + 1);
+    setNext(next + 1);
+  };
 
   return (
-    <div className="px-5 my-5 flex flex-row flex-wrap">
-      {posts && posts.map((post,i) => (
-        <article key={i} className="w-[20rem] min-h-[55vh] shadow-sm shadow-white p-3 bg-slate-700 m-2 pb-5">
-       
-          <Image src={post.picture_url} width={400} height={250} style={{objectFit:'contain'}}/>
-          <h3 className="text-lg mb-2 min-h-[20%]">{decodeURI(post.title)}</h3>
-          <p className="text-md mb-2 min-h-[20%] " dangerouslySetInnerHTML={{__html: decodeURI(post.content).slice(0,100)+'...'}}></p>
-          <div className="w-full flex items-center justify-center h-[10%] ">
-          <a className="text-lg mb-2 border p-2 justify-center items-center bg-white hover:bg-slate-500 hover:text-white text-slate-500 cursor-pointer transition-all" href={`/posts/${post.post_id}`}>Voir plus</a>
-          </div>
-       
-        </article>
-      ))}
+    <div
+      key={incrementer}
+      className="my-5 mx-3 flex flex-row items-center justify-center flex-wrap"
+    >
+      <div className="w-5 m-2 cursor-pointer">
+        {posts != undefined && prev != 0 && (
+          <FontAwesomeIcon
+            icon={faChevronLeft}
+            onClick={() => handlePrev()}
+            className="cursor-pointer hover:text-black active:text-black transition-all"
+          />
+        )}
+      </div>
 
-      {!posts && <div>Pas d'articles</div>}
+      <div className="flex w-90">
+        {posts != undefined &&
+          posts.map((post, i) =>
+            i >= prev && i <= next ? (
+              <div key={i}>
+                {/* <ClassicCardWithLink post={post} key={i}/> */}
+                <HoveredCardWithLink
+                  key={i}
+                  post={post}
+                  list={incrementer + i}
+                  title={title}
+                />
+              </div>
+            ) : null
+          )}
+      </div>
 
-    
+      <div className="w-5 m-2 ">
+        {posts != undefined && next != posts.length - 1 && posts.length > 3 && (
+          <FontAwesomeIcon
+            icon={faChevronRight}
+            className="cursor-pointer hover:text-black active:text-black transition-all"
+            onClick={() => handleNext()}
+          />
+        )}
+      </div>
+
+      {!posts && <div className="w-1/2 p-2">Pas d'articles dans <span className="capitalize">{decodeURI(title)}</span></div>}
     </div>
   );
 }

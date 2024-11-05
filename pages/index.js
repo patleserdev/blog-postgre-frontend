@@ -21,10 +21,11 @@ const geistMono = localFont({
 });
 
 export default function Home() {
+
   const [categories, setCategories] = useState([]);
 
   const getCategories = async () => {
-    const response = await fetch("http://localhost:3000/postcategories");
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/postcategories`);
 
     const result = await response.json();
 
@@ -44,8 +45,8 @@ export default function Home() {
       {/* <div className="grid grid-rows-[0px_1fr_0px] items-start justify-items-start min-h-screen p-8 pb-20 gap-16 sm:p-10 font-[family-name:var(--font-geist-sans)]"> */}
       <div className="font-[family-name:var(--font-geist-sans)]">
         <Navbar />
-        <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start relative">
-          <div className="w-[99vw] min-h-[100vh] absolute top-0 left-0 z-1 opacity-25">
+        <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start relative bg-gradient-to-b from-slate-800 from-1% to-slate-500">
+          {/* <div className="w-[99vw] min-h-[100vh] absolute top-0 left-0 z-1 opacity-25 bg-[url('/assets/header_bg.jpg')] bg-repeat-y bg-cover		">
             <Image
               alt="bg"
               src={"/assets/header_bg.jpg"}
@@ -53,19 +54,14 @@ export default function Home() {
             
               priority
             />
-          </div>
+          </div> */}
 
           <div className="w-full min-h-[100vh] z-10 my-5">
-            {categories.map((e,i) => (
+            {categories != undefined && categories.map((e,i) => (
               <div key={i}>
-              <div  className="shadow-sm shadow-slate-500 text-3xl bg-slate-800 p-2  w-1/4 mx-5 flex flex-row items-center justify-start">
-                 <FontAwesomeIcon className="w-8" icon={faSquareCaretRight} size='lg'/>
-                <h3 className="capitalize w-1/4 mx-2" >
-                 {decodeURI(e.title)}
-                 </h3>
-              </div>
+                
            
-              <Getposts categorie={e.categorie_id}/>
+              <Getposts incrementer={e.categorie_id+i} categorie={e.categorie_id} title={e.title}/>
     
               </div>
             ))}

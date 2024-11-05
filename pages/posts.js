@@ -26,7 +26,9 @@ const Posts = () => {
       <main className="w-full flex flex-col items-center justify-center z-1">
         <h1 className="text-2xl underline">Posts :</h1>
         <div className="border w-1/4 mt-2">
-        <Addbutton/>
+        <Addbutton>
+                  Ajouter
+        </Addbutton>
         </div>
         
        

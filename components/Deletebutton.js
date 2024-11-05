@@ -4,8 +4,8 @@ import { useSelector } from 'react-redux';
 
 export default function Deletebutton({id,source}) {
 
-const BACKEND_URL='http://localhost:3000'
-
+// const BACKEND_URL='http://localhost:3000'
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 const dispatch = useDispatch();
 const reload = useSelector((state) => state.reloader.value);
 

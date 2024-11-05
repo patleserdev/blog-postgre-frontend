@@ -6,9 +6,10 @@ import reloader from '../reducers/reloader';
 import file from '../reducers/file';
 import modal from '../reducers/modal';
 import entity from '../reducers/entity';
+import editmode from '../reducers/editmode'
 
 const store = configureStore({
-	reducer: { reloader,file,modal,entity },
+	reducer: { reloader,file,modal,entity,editmode },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {

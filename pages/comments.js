@@ -27,7 +27,9 @@ const Comments = () => {
       <main className="w-full flex flex-col items-center justify-center">
         <h1 className="text-2xl underline">Commentaires :</h1>
         <div className="border w-1/4 mt-2">
-        <Addbutton/>
+        <Addbutton>
+                  Ajouter
+        </Addbutton>
         </div>
         
 
@@ -36,7 +38,8 @@ const Comments = () => {
         {openModal &&
         <div className="z-5">
         <Modal schema={schema}/>
-        </div>}
+        </div>
+        }
       </main>
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center"></footer>
     </div>

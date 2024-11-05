@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import { openModal } from "../reducers/modal";
 import { addEntity } from "../reducers/entity";
+import { activeEdit } from "../reducers/editmode";
 
 export default function Editbutton({ entity, source }) {
   const dispatch = useDispatch();
@@ -8,6 +9,7 @@ export default function Editbutton({ entity, source }) {
   const handleToEdit = (entity) => {
     dispatch(openModal(true));
     dispatch(addEntity(entity));
+    dispatch(activeEdit(true));
   };
 
   return (

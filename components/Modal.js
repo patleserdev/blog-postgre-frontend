@@ -6,8 +6,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { openModal } from '../reducers/modal';
 import { deleteEntity } from '../reducers/entity';
 
-export default function Modal({schema}) {
-
+export default function Modal({schema,editMode}) {
+  console.log('editmode dans modal',editMode)
     const dispatch = useDispatch();
     // const modal = useSelector((state) => state.modal.value);
 
@@ -15,16 +15,19 @@ export default function Modal({schema}) {
         dispatch(openModal(false));
         dispatch(deleteEntity(null));
     }
+   
   return (
     <div
-      className="fixed top-0 left-0 w-full
-    min-h-full flex flex-row items-center justify-center bg-black opacity-95"
+      className="absolute top-[5%] left-0 min-h-[%] w-full
+     flex flex-row items-center justify-center"
+     
     >
-        <div className="bg-black relative w-1/2
+        <div className="bg-black relative w-1/2 min-h-[50%] p-2
     min-h-full flex items-center opacity-100 justify-center text-white">
-        <Form schema={schema}/>
+        <Form schema={schema} editMode={editMode}/>
 
-        <FontAwesomeIcon icon={faCircleXmark} size='xl' className="cursor-pointer w-6 absolute right-0 top-0" onClick={()=>handleToClose()}/>
+        <FontAwesomeIcon icon={faCircleXmark} size='xl' 
+        className="cursor-pointer w-6 absolute right-5 top-3 m-2 my-5" onClick={()=>handleToClose()}/>
         </div>
 
     </div>

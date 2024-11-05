@@ -114,25 +114,38 @@ export const datas=[
   identifier:'user_id',
   inputs:
   [
+    // {
+    //   label:'ID utilisateur',
+    //   field :'user_id',
+    //   type:'number',
+    //    placeholder:'l\'ID utilisateur',
+    //   display:true,
+    //   displayinselect:'id',
+    //  },
     {
       label:'nom d\'utilisateur',
       field :'username',
       type:'string',
       required:true,
-      placeholder:'le nom d\'utilisateur'
+      placeholder:'le nom d\'utilisateur',
+      display:true,
+      displayinselect:'username',
      }
      ,{
       label:'email',
       field:'email',
       type:'string',
       required:true,
-      placeholder:'l\'adresse mail'
+      placeholder:'l\'adresse mail',
+      display:true,
+      displayinselect:'email',
      },
      {
       label:'Actif ?',
       field:'isactive',
       type:'boolean',
-      placeholder:'Actif'
+      placeholder:'Actif',
+      display:true
      }
   ]
 },
@@ -142,19 +155,29 @@ export const datas=[
   identifier:'post_id',
   inputs:
   [
+    // {
+    //   label:'ID post',
+    //   field :'post_id',
+    //   type:'number',
+      
+    //   placeholder:'l\'id du post',
+    //   display:true
+    //  },
     {
       label:'Titre du post',
       field :'title',
       type:'string',
       required:true,
-      placeholder:'le titre du post'
+      placeholder:'le titre du post',
+      display:true
      }
      ,{
       label:'Contenu du post',
       field:'content',
       type:'longtext',
       required:true,
-      placeholder:'le contenu du post'
+      placeholder:'le contenu du post',
+      display:false
      },
      {
       label:'Catégorie',
@@ -163,30 +186,34 @@ export const datas=[
       entity:'postcategories',
       displayinselect:'title',
       valueinselect:'categorie_id',
-      comments:'permet de choisir l\'utilisateur dans la liste d\'utilisateur',
+      comments:'permet de choisir la catégorie dans la liste des catégories',
       required:true,
-      placeholder:'Choisir l\'utilisateur'
+      placeholder:'Choisir la catégorie',
+      display:true
      }
      ,{
       label:'Archivé',
       field:'isarchived',
       type:'boolean',
       required:false,
-      placeholder:'Cocher s\'il est archivé'
+      placeholder:'Cocher s\'il est archivé',
+      display:true
      }
      ,{
       label:'Détruit',
       field:'isdestroyed',
       type:'boolean',
       required:false,
-      placeholder:'Cocher s\'il est détruit'
+      placeholder:'Cocher s\'il est détruit',
+      display:true
      }
      ,{
       label:'Image',
       field:'picture_url',
       type:'upload',
       required:false,
-      placeholder:'Ajoute l\'image'
+      placeholder:'Ajoute l\'image',
+      display:true
      }
     //  ,{
     //   label:'Public_ID',
@@ -208,25 +235,30 @@ export const datas=[
       field :'title',
       type:'string',
       required:true,
-      placeholder:'le nom'
+      placeholder:'le nom',
+      display:true
      }
      ,{
       label:'Contenu',
       field:'content',
       type:'longtext',
       required:true,
-      placeholder:'le contenu du commentaire'
+      placeholder:'le contenu du commentaire',
+      display:true
      }
      ,{
       label:'Archivé ?',
       field:'isarchived',
       type:'boolean',
       required:false,
+      display:true
      }
      ,{
       label:'Détruit ?',
       field:'isdestroyed',
       type:'boolean',
+      required:false,
+      display:true
       
      },
      {
@@ -238,7 +270,8 @@ export const datas=[
       valueinselect:'user_id',
       comments:'permet de choisir l\'utilisateur dans la liste d\'utilisateur',
       required:true,
-      placeholder:'Choisir l\'utilisateur'
+      placeholder:'Choisir l\'utilisateur',
+      display:true
      },
      {
       label:'Post',
@@ -249,7 +282,8 @@ export const datas=[
       valueinselect:'post_id',
       comments:'permet de choisir le post dans la liste de posts',
       required:true,
-      placeholder:'Choisir le post'
+      placeholder:'Choisir le post',
+      display:true
      }
   ]
 },
@@ -260,25 +294,36 @@ export const datas=[
   identifier:'categorie_id',
   inputs:
   [
+    // {
+    //   label:'ID catégorie',
+    //   field :'categorie_id',
+    //   type:'number',
+      
+    //   placeholder:'l\'id de la catégorie',
+    //   display:true
+    //  },
     {
       label:'Titre',
       field :'title',
       type:'string',
       required:true,
-      placeholder:'le titre'
+      placeholder:'le titre',
+      display:true
      }
      ,{
       label:'Description',
       field:'description',
       type:'string',
       required:true,
-      placeholder:'la description'
+      placeholder:'la description',
+      display:true
      }
      ,{
       label:'Actif ?',
       field:'isactive',
       type:'boolean',
-      placeholder:'si la catégorie est active '
+      placeholder:'si la catégorie est active ',
+      display:true
      }
   ]
 },

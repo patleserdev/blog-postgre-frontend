@@ -30,7 +30,7 @@ export default function Navbar() {
               <a className={pathname === "/" ? active : inactive}>Home</a>
             </Link>
           </li>
-          <ul className="md:flex border items-center justify-center hidden">
+          <ul className="md:flex items-center justify-center hidden">
             <li className={adminLinks}>ADMIN</li>
             <li className={adminLinks}>
               <Link href="/postcategories" passHref legacyBehavior>

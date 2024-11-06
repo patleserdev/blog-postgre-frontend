@@ -1,13 +1,12 @@
 import Image from "next/legacy/image.js";
 
-export default function HoveredCardWithLink({ post, list, title }) {
+export default function HoveredCardWithLink({ post, list, title,little }) {
   return (
     <article
       key={list}
-      className="
-      w-full 
-      h-[20rem] sm:h-[15rem] md:h-[18rem] lg:h-[13rem] xl:h-[18rem] 
-      border relative m-2"
+      className={little ? 
+        "w-full lg:w-[15rem] h-[20rem] sm:h-[15rem] md:h-[18rem] lg:h-[13rem] lg:h-[15rem] border relative m-2" : 
+        "w-full h-[20rem] sm:h-[15rem] md:h-[18rem] lg:h-[13rem] xl:h-[18rem] border relative m-2"}
     >
       <div className="w-full h-full relative">
         <div className="h-full relative z-0">

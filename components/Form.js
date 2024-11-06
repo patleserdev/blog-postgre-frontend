@@ -305,12 +305,12 @@ export default function Form({ schema, except = [], hidden = [],condensed,title 
           except == null || !except.includes(input.field) ? (
             <div
               key={i}
-              className={hidden.includes(input.field) ? "flex items-center justify-between": "flex items-center justify-between my-2 p-2"}
+              className={hidden.includes(input.field) ? "flex": "flex flex-col md:flex-row items-start md:items-center md:justify-between my-2 p-2"}
             >
               {!hidden.includes(input.field) && (
                 <label
                   htmlFor={input.name}
-                  className="w-1/3 capitalize text-md"
+                  className="w-full md:w-1/3 capitalize text-md"
                 >
                   {input.label}
                 </label>
@@ -330,7 +330,7 @@ export default function Form({ schema, except = [], hidden = [],condensed,title 
                     className={
                       errors.includes(input.field)
                         ? "border-red-500 border-1 w-1/2 text-black px-1"
-                        : "w-2/3 text-black px-1"
+                        : "w-full  text-black px-1"
                     }
                     type={input.type}
                     onChange={(e) => handleChange(e)}
@@ -366,7 +366,7 @@ export default function Form({ schema, except = [], hidden = [],condensed,title 
                   className={
                     errors.includes(input.field)
                       ? "border-red-500 border-2 w-1/2 text-black px-1"
-                      : "w-1/2 text-black px-1 capitalize h-8"
+                      : "w-full md:w-1/2 text-black px-1 capitalize h-8"
                   }
                   value={
                     formData[input.field]
@@ -415,7 +415,7 @@ export default function Form({ schema, except = [], hidden = [],condensed,title 
                   className={
                     errors.includes(input.field)
                       ? "border-red-500 border-2 w-1/2 text-black px-1"
-                      : "w-1/2 bg-white text-black px-1"
+                      : "w-full md:w-1/2 bg-white text-black px-1"
                   }
                   placeholder={`Saisir ${input.placeholder}`}
                   value={
@@ -429,7 +429,7 @@ export default function Form({ schema, except = [], hidden = [],condensed,title 
               )}
 
               {input.type == "boolean" && (
-                <div className="h-1/4 w-1/2">
+                <div className="h-1/4 w-full md:w-1/2">
                   <input
                     type="checkbox"
                     className={

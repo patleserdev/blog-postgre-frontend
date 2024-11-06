@@ -8,7 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import useScreenSize from '@/hooks/useScreenSize'
 
-export default function Getposts({ categorie, incrementer, title }) {
+export default function Getposts({ categorie, incrementer, title,little,article = null }) {
 
   const screenSize = useScreenSize();
 
@@ -16,13 +16,14 @@ export default function Getposts({ categorie, incrementer, title }) {
 
   // const BACKEND_URL = 'http://localhost:3000';
   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const [max,setMax]=useState(0)
   const [prev, setPrev] = useState(0);
   const [next, setNext] = useState(0);
   const [posts, setPosts] = useState([]);
-  const [isLoading,setIsLoading]=useState(false)
+
 
   const getposts = async () => {
-    setIsLoading(true)
+
     const response = await fetch(
       `${BACKEND_URL}/posts/bycategory/${categorie}`
     );
@@ -31,7 +32,7 @@ export default function Getposts({ categorie, incrementer, title }) {
     // console.log(result)
     if (result) {
       setPosts(result.data);
-      setIsLoading(false)
+
     }
   };
 
@@ -40,20 +41,28 @@ export default function Getposts({ categorie, incrementer, title }) {
         
   }, []);
 
-
+console.log('post in getposts',posts)
   useEffect(() => {
     setPrev(0);
-    if(screenSize.width > 1200)
+    if(little)
+    {
+      setNext(2);
+      setMax(2)
+    }
+    else if(screenSize.width > 1200)
     {
       setNext(3);
+      setMax(3)
     }
     else if (screenSize.width <= 1200 && screenSize.width >= 800)
     {
       setNext(2);
+      setMax(2)
     }
     else
     {
       setNext(1);
+      setMax(1)
     }
     
   }, [screenSize]);
@@ -72,9 +81,9 @@ export default function Getposts({ categorie, incrementer, title }) {
     
     <div
       key={incrementer}
-      className="my-5 mx-3 flex flex-col sm:flex-row items-center justify-center lg:flex-wrap "
+      className={little ? "w-full flex flex-col sm:flex-row items-center justify-center lg:flex-wrap" : "my-5 mx-3 flex flex-col sm:flex-row items-center justify-center lg:flex-wrap"}
     >
-      <div className="mx-2 sm:w-5  cursor-pointer flex items-center justify-center text-center">
+      <div className={little ? "mx-2 sm:w-[5%] cursor-pointer flex flex-row items-center justify-center text-center" :"mx-2 sm:w-5 cursor-pointer flex flex-row items-center justify-center text-center"}>
         {posts != undefined && prev != 0 && (
           <FontAwesomeIcon
             icon={faChevronLeft}
@@ -84,26 +93,26 @@ export default function Getposts({ categorie, incrementer, title }) {
         )}
       </div>
 
-      <div className="w-[90%] flex flex-col sm:flex-row sm:flex-wrap  items-center justify-around">
+      <div className={little ? "w-[80%] flex flex-col sm:flex-row sm:flex-wrap  items-center justify-around": "w-[90%] flex flex-col sm:flex-row sm:flex-wrap  items-center justify-around"}>
         {posts != undefined &&
           posts.map((post, i) =>
             i >= prev && i <= next ? (
-              <div key={i} className="
-              w-full sm:w-[45%]  md:w-[32%] lg:w-[25%] px-2">
+              <div key={i} className={little ? "w-full sm:w-[45%]  md:w-[32%] lg:w-[30%] px-2" :"w-full sm:w-[45%]  md:w-[32%] lg:w-[25%] px-2"}>
                 {/* <ClassicCardWithLink post={post} key={i}/> */}
                 <HoveredCardWithLink
                   key={i}
                   post={post}
                   list={incrementer + i}
                   title={title}
+                  little={little ? true : false}
                 />
               </div>
             ) : null
           )}
       </div>
 
-      <div className="mx-2 sm:w-5 flex items-center justify-center text-center">
-        {posts != undefined && next != posts.length - 1 && posts.length > 3 && (
+      <div className={little ? "mx-2 sm:w-[5%] flex items-center justify-center text-center" :"mx-2 sm:w-5 flex items-center justify-center text-center"}>
+        {posts != undefined && next-1 != max && posts.length > 3 && (
           <FontAwesomeIcon
             icon={faChevronRight}
             className="cursor-pointer hover:text-black active:text-black transition-all text-lg"

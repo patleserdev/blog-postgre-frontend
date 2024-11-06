@@ -26,7 +26,7 @@ export default function Modal({schema}) {
      style={{top:screenSize.totop+50}}
     >
      
-        <div className="bg-background relative w-1/2 min-h-[50%] p-2
+        <div className="bg-background relative w-3/4 lg:w-1/2 min-h-[50%] p-2
     min-h-full flex items-center opacity-100 justify-center text-white border shadow-black shadow-lg">
         <Form schema={schema}/>
 

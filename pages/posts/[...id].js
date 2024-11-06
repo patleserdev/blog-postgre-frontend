@@ -8,6 +8,7 @@ import CommentsListByPost from "@/components/CommentsListByPost.js";
 
 import { PuffLoader } from "react-spinners";
 import Layout from "@/components/Layout.js";
+import Getposts from "@/components/Getposts.js";
 
 export default function Post() {
   const dispatch = useDispatch();
@@ -46,6 +47,8 @@ export default function Post() {
     };
   }, [router]);
 
+  console.log(article)
+
   return (
     <Layout>
       <div className="flex flex-col w-full items-center justify-center mb-5">
@@ -61,15 +64,15 @@ export default function Post() {
           </div>
         )}
         {!isLoading && article && (
-          <article className="w-full h-full p-4">
-            <h1 className="text-3xl mb-2 px-4 text-wrap">
+          <article className="w-full h-full p-1 lg:p-4 ">
+            <h1 className="text-lg lg:text-3xl mb-2 px-4 text-wrap">
               {decodeURI(article.title)}
             </h1>
-            <h2 className="text-xl mb-2 px-4 capitalize">
+            <h2 className="text-xs lg:text-xl mb-2 px-4 capitalize">
               Catégorie : {decodeURI(article.categorie)}
             </h2>
-            <div className="flex">
-              <div className="w-1/2 h-full px-2">
+            <div className="flex flex-col-reverse lg:flex-row mb-2 ">
+              <div className="w-full lg:w-1/2 h-full px-2 ">
                 <p
                   className="text-justify p-2 pr-5"
                   dangerouslySetInnerHTML={{
@@ -77,7 +80,7 @@ export default function Post() {
                   }}
                 ></p>
               </div>
-              <div className="w-1/2 h-full flex flex-row items-center justify-center my-2">
+              <div className="w-full lg:w-1/2 h-full flex flex-row items-center justify-center my-2">
                 <Image
                   src={article.picture_url}
                   height={500}
@@ -87,15 +90,31 @@ export default function Post() {
                 />
               </div>
             </div>
-            <div className="w-full flex items-center justify-start">
+            <div className="flex flex-row justify-around items-around">
+            <div className="w-full flex flex-col items-start justify-start mt-5 mx-1">
               {/* <button className="border p-2 text-xl hover:bg-white hover:text-slate-500 transition-all">Commenter</button> */}
-              <div className="w-full border">
-                <Form schema={schema} except={except} hidden={hidden} title="Commenter" condensed/>
+              <div className="w-full lg:w-full border">
+                <Form
+                  schema={schema}
+                  except={except}
+                  hidden={hidden}
+                  title="Commenter"
+                  condensed
+                />
+              </div>
+
+              <div className="w-full lg:w-full mt-1">
+                <CommentsListByPost post={Number(router.query.id[0])} />
               </div>
             </div>
-            <div className="w-full mt-1">
-              <CommentsListByPost post={Number(router.query.id[0])} />
+
+            <div className="w-full flex flex-col items-start justify-start mt-5">
+             {/* Liens vers les autres articles sous forme de carousel par exemple */}
+             <Getposts title={article.categorie} incrementer={1} categorie={article.categorie_id} article={article.post_id} little/>
             </div>
+
+            </div>
+           
           </article>
         )}
       </div>

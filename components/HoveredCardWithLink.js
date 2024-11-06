@@ -6,7 +6,7 @@ export default function HoveredCardWithLink({ post, list, title }) {
       key={list}
       className="
       w-full 
-      h-[25rem] sm:h-[15rem] md:h-[18rem] lg:h-[13rem] xl:h-[18rem] 
+      h-[20rem] sm:h-[15rem] md:h-[18rem] lg:h-[13rem] xl:h-[18rem] 
       border relative m-2"
     >
       <div className="w-full h-full relative">

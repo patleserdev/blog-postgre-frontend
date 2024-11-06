@@ -3,9 +3,10 @@ import Addbutton from "@/components/Addbutton.js";
 import Navbar from "@/components/Navbar";
 import Head from "next/head.js";
 import Modal from "@/components/Modal";
-import { useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 
 import Footer from "@/components/Footer.js";
+import Layout from "@/components/Layout.js";
 
 export const metadata = {
   title: "Blog - Comments",
@@ -20,10 +21,9 @@ const Comments = () => {
       <Head>
         <title>Blogger - Commentaires</title>
       </Head>
-      {/* <div className="grid grid-rows-[20px_1fr_20px] items-start justify-items-start min-h-screen p-8 pb-20 gap-16 sm:p-10 font-[family-name:var(--font-geist-sans)]"> */}
-      <div className="font-[family-name:var(--font-geist-sans)]">
-        <Navbar />
-        <main className="w-full flex flex-col items-center justify-center">
+
+      <Layout>
+        <div className="flex flex-col w-full items-center justify-center mb-5">
           <h1 className="text-2xl underline">Commentaires :</h1>
           <div className="border w-1/4 mt-2">
             <Addbutton>Ajouter</Addbutton>
@@ -36,9 +36,8 @@ const Comments = () => {
               <Modal schema={schema} />
             </div>
           )}
-        </main>
-        <Footer />
-      </div>
+        </div>
+      </Layout>
     </>
   );
 };

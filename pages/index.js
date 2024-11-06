@@ -4,6 +4,7 @@ import Head from "next/head.js";
 import Getposts from "@/components/Getposts";
 import { useEffect, useState } from "react";
 import Footer from "@/components/Footer.js";
+import Layout from "@/components/Layout.js";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -47,9 +48,9 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
         <title>Blogger - Accueil</title>
       </Head>
       {/* <div className="grid grid-rows-[0px_1fr_0px] items-start justify-items-start min-h-screen p-8 pb-20 gap-16 sm:p-10 font-[family-name:var(--font-geist-sans)]"> */}
-      <div className="font-[family-name:var(--font-geist-sans)] w-full">
-        <Navbar />
-        <main className="w-full flex flex-col gap-8 row-start-2 items-center sm:items-start relative bg-gradient-to-b from-slate-800 from-1% to-slate-500">
+
+      <Layout>
+      
    
 
           <div className="w-full min-h-[100vh]  my-5">
@@ -64,9 +65,13 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
                 </div>
               ))}
           </div>
-        </main>
-        <Footer />
-      </div>
+       
+       
+      </Layout>
+      
+     
+        
+      
     </>
   );
 }

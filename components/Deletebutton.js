@@ -45,7 +45,7 @@ const handleToDelete=()=>{
     <>
       <button 
       onClick={()=>handleToDelete()}
-      className="p-2 text-md w-[50%] border hover:bg-slate-500 transition-all">
+      className="p-2 px-4 text-md w-full md:w-[50%] sm:w-full border hover:bg-slate-500 transition-all">
         Supprimer
       </button>
     </>

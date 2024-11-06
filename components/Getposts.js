@@ -6,16 +6,23 @@ import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
+import useScreenSize from '@/hooks/useScreenSize'
 
 export default function Getposts({ categorie, incrementer, title }) {
+
+  const screenSize = useScreenSize();
+
+  // console.log(screenSize.width)
 
   // const BACKEND_URL = 'http://localhost:3000';
   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
   const [prev, setPrev] = useState(0);
   const [next, setNext] = useState(0);
   const [posts, setPosts] = useState([]);
+  const [isLoading,setIsLoading]=useState(false)
 
   const getposts = async () => {
+    setIsLoading(true)
     const response = await fetch(
       `${BACKEND_URL}/posts/bycategory/${categorie}`
     );
@@ -24,14 +31,32 @@ export default function Getposts({ categorie, incrementer, title }) {
     // console.log(result)
     if (result) {
       setPosts(result.data);
+      setIsLoading(false)
     }
   };
 
   useEffect(() => {
     getposts();
-    setPrev(0);
-    setNext(3);
+        
   }, []);
+
+
+  useEffect(() => {
+    setPrev(0);
+    if(screenSize.width > 1200)
+    {
+      setNext(3);
+    }
+    else if (screenSize.width <= 1200 && screenSize.width >= 800)
+    {
+      setNext(2);
+    }
+    else
+    {
+      setNext(1);
+    }
+    
+  }, [screenSize]);
 
   const handlePrev = () => {
     setPrev(prev - 1);
@@ -44,25 +69,27 @@ export default function Getposts({ categorie, incrementer, title }) {
   };
 
   return (
+    
     <div
       key={incrementer}
-      className="my-5 mx-3 flex flex-row items-center justify-center flex-wrap"
+      className="my-5 mx-3 flex flex-col sm:flex-row items-center justify-center lg:flex-wrap "
     >
-      <div className="w-5 m-2 cursor-pointer">
+      <div className="mx-2 sm:w-5  cursor-pointer flex items-center justify-center text-center">
         {posts != undefined && prev != 0 && (
           <FontAwesomeIcon
             icon={faChevronLeft}
             onClick={() => handlePrev()}
-            className="cursor-pointer hover:text-black active:text-black transition-all"
+            className="cursor-pointer hover:text-black active:text-black transition-all text-lg text-center"
           />
         )}
       </div>
 
-      <div className="flex w-90">
+      <div className="w-[90%] flex flex-col sm:flex-row sm:flex-wrap  items-center justify-around">
         {posts != undefined &&
           posts.map((post, i) =>
             i >= prev && i <= next ? (
-              <div key={i}>
+              <div key={i} className="
+              w-full sm:w-[45%]  md:w-[32%] lg:w-[25%] px-2">
                 {/* <ClassicCardWithLink post={post} key={i}/> */}
                 <HoveredCardWithLink
                   key={i}
@@ -75,11 +102,11 @@ export default function Getposts({ categorie, incrementer, title }) {
           )}
       </div>
 
-      <div className="w-5 m-2 ">
+      <div className="mx-2 sm:w-5 flex items-center justify-center text-center">
         {posts != undefined && next != posts.length - 1 && posts.length > 3 && (
           <FontAwesomeIcon
             icon={faChevronRight}
-            className="cursor-pointer hover:text-black active:text-black transition-all"
+            className="cursor-pointer hover:text-black active:text-black transition-all text-lg"
             onClick={() => handleNext()}
           />
         )}

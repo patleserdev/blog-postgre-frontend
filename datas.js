@@ -129,7 +129,7 @@ export const datas=[
       required:true,
       placeholder:'le nom d\'utilisateur',
       display:true,
-      displayinselect:'username',
+      displayinselect:'username'
      }
      ,{
       label:'email',
@@ -138,7 +138,7 @@ export const datas=[
       required:true,
       placeholder:'l\'adresse mail',
       display:true,
-      displayinselect:'email',
+      displayinselect:'email'
      },
      {
       label:'Actif ?',

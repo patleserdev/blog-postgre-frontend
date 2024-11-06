@@ -19,6 +19,8 @@ import { deleteEntity } from '../reducers/entity';
 
 export default function Form({ schema, except = [], hidden = []}) {
 
+  
+
   // const BACKEND_URL = "http://localhost:3000";
   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
   const dispatch = useDispatch();
@@ -36,8 +38,8 @@ export default function Form({ schema, except = [], hidden = []}) {
   const [toEdit, setToEdit] = useState(editMode ? true : false);
   const [identifier, setIdentifier] = useState("");
 
-  console.log('formDATA',formData);
-  console.log('entity',entity);
+  // console.log('formDATA',formData);
+  // console.log('entity',entity);
   useEffect(() => {
     getIdentifier();
     
@@ -202,7 +204,7 @@ export default function Form({ schema, except = [], hidden = []}) {
     }
   };
 
-  console.log('toEdit',toEdit)
+  // console.log('toEdit',toEdit)
   /**
    *  Ajout du post au backend
    */
@@ -564,7 +566,7 @@ export default function Form({ schema, except = [], hidden = []}) {
   }
 
   return (
-    <div className="border w-full p-1">
+    <div className=" w-full p-1">
       {displayLabel}
       <form onSubmit={(e) => handleSubmit(e)}>
         {displayInputs}

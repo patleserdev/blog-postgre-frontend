@@ -89,11 +89,11 @@ export default function Post() {
             </div>
             <div className="w-full flex items-center justify-start">
               {/* <button className="border p-2 text-xl hover:bg-white hover:text-slate-500 transition-all">Commenter</button> */}
-              <div className="w-1/2">
-                <Form schema={schema} except={except} hidden={hidden} />
+              <div className="w-full border">
+                <Form schema={schema} except={except} hidden={hidden} title="Commenter" condensed/>
               </div>
             </div>
-            <div className="w-full">
+            <div className="w-full mt-1">
               <CommentsListByPost post={Number(router.query.id[0])} />
             </div>
           </article>

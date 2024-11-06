@@ -17,7 +17,7 @@ import { deleteFile } from "../reducers/file";
 import { openModal } from "../reducers/modal";
 import { deleteEntity } from '../reducers/entity';
 
-export default function Form({ schema, except = [], hidden = []}) {
+export default function Form({ schema, except = [], hidden = [],condensed,title = null}) {
 
   
 
@@ -288,8 +288,8 @@ export default function Form({ schema, except = [], hidden = []}) {
    */
   const displayLabel = datas.map((e, i) =>
     e.source == schema ? (
-      <h2 key={i} className="text-2xl p-1 px-2 mb-1">
-       {editMode ? "Modifier" : "Ajouter"} {e.label}
+      <h2 key={i} className={condensed ? "text-2xl px-2":"text-2xl p-1 px-2 mb-1"}>
+       {title ? title : editMode ? "Modifier" : "Ajouter"} {!title ? e.label : ""}
       </h2>
     ) : null
   );
@@ -305,7 +305,7 @@ export default function Form({ schema, except = [], hidden = []}) {
           except == null || !except.includes(input.field) ? (
             <div
               key={i}
-              className="flex items-center justify-between  my-2 p-2"
+              className={hidden.includes(input.field) ? "flex items-center justify-between": "flex items-center justify-between my-2 p-2"}
             >
               {!hidden.includes(input.field) && (
                 <label
@@ -566,12 +566,16 @@ export default function Form({ schema, except = [], hidden = []}) {
   }
 
   return (
-    <div className=" w-full p-1">
+    <div className={condensed ? "w-full" : " w-full p-1"}>
       {displayLabel}
       <form onSubmit={(e) => handleSubmit(e)}>
         {displayInputs}
         <div className="w-full text-center">
-          <button className="border mt-2 p-2 px-5 bg-slate-400 hover:bg-slate-600 hover:text-white transition-all">
+          <button className={condensed ? 
+          "border px-5 bg-slate-400 hover:bg-slate-600 hover:text-white transition-all" 
+        :
+          "border mt-2 p-2 px-5 bg-slate-400 hover:bg-slate-600 hover:text-white transition-all" 
+        }>
             Valider
           </button>
         </div>

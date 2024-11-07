@@ -99,7 +99,7 @@ export default function Post() {
                   }}
                 ></p>
               </div>
-              <div className="w-full lg:w-1/2 h-full flex flex-row items-center justify-center my-2">
+              <div className="w-[90%] mx-auto lg:w-1/2 h-full flex flex-row items-center justify-center my-2">
                 <Image
                   src={article.picture_url}
                   height={500}
@@ -110,7 +110,7 @@ export default function Post() {
               </div>
             </div>
             <div className="flex flex-col md:flex-row justify-around items-around">
-            <div className="w-full flex flex-col items-start justify-start mt-5 mx-1">
+            <div className="w-[95%] mx-auto flex flex-col items-start justify-start mt-5 mx-1">
               {/* <button className="border p-2 text-xl hover:bg-white hover:text-slate-500 transition-all">Commenter</button> */}
               <div className="w-full lg:w-full border">
                 <Form

@@ -93,9 +93,9 @@ console.log('post in getposts',posts)
     
     <div
       key={incrementer}
-      className={little ? "w-full flex flex-col md:flex-row items-center justify-center lg:flex-wrap" : "my-5 mx-3 flex flex-col sm:flex-row items-center justify-center lg:flex-wrap"}
+      className={little ? "w-full flex flex-col sm:flex-row md:flex-row items-center justify-center lg:flex-wrap" : "my-5 mx-3 flex flex-col sm:flex-row items-center justify-center lg:flex-wrap"}
     >
-      <div className={little ? "sm:w-[5%] cursor-pointer flex flex-row items-center justify-center text-center" :"mx-2 sm:w-5 cursor-pointer flex flex-row items-center justify-center text-center"}>
+      <div className={little ? "rotate-90 sm:w-[5%] md:w-[15%] cursor-pointer flex flex-row items-center justify-center text-center" :"mx-2 sm:w-5 cursor-pointer flex flex-row items-center justify-center text-center"}>
         {posts != undefined && prev != 0 && (
           <FontAwesomeIcon
             icon={faChevronLeft}
@@ -105,7 +105,7 @@ console.log('post in getposts',posts)
         )}
       </div>
 
-      <div className={little ? "h-full w-full flex flex-col sm:flex-row md:flex-col justify-center xl:flex-row items-center xl:justify-around": "w-[90%] flex flex-col sm:flex-row sm:flex-wrap  items-center justify-around"}>
+      <div className={little ? "h-full w-full xl:w-[90%] sm:w-[90%] md:w-[70%] flex flex-col sm:flex-row md:flex-col justify-center xl:flex-row items-center xl:justify-around": "w-[90%] flex flex-col sm:flex-row sm:flex-wrap  items-center justify-around"}>
         {posts != undefined &&
           posts.map((post, i) =>
             i >= prev && i <= next ? (
@@ -123,8 +123,8 @@ console.log('post in getposts',posts)
           )}
       </div>
 
-      <div className={little ? "sm:w-[5%] flex items-center justify-center text-center" :"mx-2 sm:w-5 flex items-center justify-center text-center"}>
-        {posts != undefined && next-1 != max && posts.length > 3 && (
+      <div className={little ? "rotate-90 sm:w-[5%] md:w-[15%] flex items-center justify-center text-center" :"mx-2 sm:w-5 flex items-center justify-center text-center"}>
+        {posts != undefined && next < posts.length-1 && posts.length >= max && (
           <FontAwesomeIcon
             icon={faChevronRight}
             className="cursor-pointer hover:text-black active:text-black transition-all text-lg"

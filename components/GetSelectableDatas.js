@@ -8,6 +8,9 @@ export default function GetSelectableDatas({ source,counter,valueinselect,displa
     useEffect(()=>{
 
         (async()=>{
+            try{
+                
+            
            const response= await fetch(`${BACKEND_URL}/${source}`)
             if(response)
             {
@@ -24,6 +27,12 @@ export default function GetSelectableDatas({ source,counter,valueinselect,displa
             
                
             }
+        }
+        catch(error)
+        {
+            console.error(error)
+        }
+
         })()
     },[])
 

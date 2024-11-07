@@ -22,24 +22,37 @@ export default function Home() {
   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [errors,setErrors] = useState("")
   const getCategories = async () => {
     setIsLoading(true);
-    const response = await fetch(`${BACKEND_URL}/postcategories`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
 
-    const result = await response.json();
+    try{
+      setErrors([])
+      const response = await fetch(`${BACKEND_URL}/postcategories`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(response)
+  
+      const result = await response.json();
+  
+      if (result) {
+        setCategories(result.data);
+        setIsLoading(false);
+      }
 
-    if (result) {
-      setCategories(result.data);
+    }
+    catch(error)
+    {
+      setErrors("Impossible de récupérer le contenu de la base de données.")
+      console.error(error)
       setIsLoading(false);
     }
+ 
   };
-
+  console.log(errors)
   useEffect(() => {
     getCategories();
   }, []);
@@ -51,10 +64,14 @@ export default function Home() {
       {/* <div className="grid grid-rows-[0px_1fr_0px] items-start justify-items-start min-h-screen p-8 pb-20 gap-16 sm:p-10 font-[family-name:var(--font-geist-sans)]"> */}
 
       <Layout>
-        <div className="w-full min-h-[100vh] my-5">
+        <div className="w-full min-h-[70vh] my-5">
 
-          {isLoading && <div className="flex h-[80vh] items-center justify-center my-5">
+          {isLoading && <div className="flex h-[65vh] items-center justify-center my-5">
             <PuffLoader color={"white"} cssOverride={{ textAlign: "center" }} />
+          </div>}
+
+          {errors && !isLoading && !categories && <div className="flex h-[65vh] items-center justify-center my-5 ">
+           <p className="text-3xl">{errors}</p> 
           </div>}
 
           {categories != undefined && !isLoading &&

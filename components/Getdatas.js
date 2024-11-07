@@ -12,10 +12,15 @@ export default function Getdatas({ source,inputs,identifier }) {
     const [datas,setDatas]=useState([])
     const reload = useSelector((state) => state.reloader.value);
     const [isLoading,setIsLoading]=useState(false)
+    const [errors,setErrors]=useState('')
 
     useEffect(()=>{
         (async()=>{
             setIsLoading(true)
+            try
+            {
+
+            
            const response= await fetch(`${BACKEND_URL}/${source}`)
             if(response)
             {
@@ -28,6 +33,13 @@ export default function Getdatas({ source,inputs,identifier }) {
                
             }
             setIsLoading(false)
+
+            }
+            catch(error){
+                setErrors("Impossible de récupérer le contenu de la base de données.")
+                console.error(error)
+                setIsLoading(false);
+            }
         })()
     },[reload])
 
@@ -74,8 +86,9 @@ export default function Getdatas({ source,inputs,identifier }) {
             <div className="flex items-center justify-center my-5"><PuffLoader color={'white'} cssOverride={{textAlign:'center'}}/></div>
             </td></tr>}
         {displayDatas.length > 0 && displayDatas}
-        {displayDatas.length == 0 && <tr className="border text-center my-5 p-2"><td colSpan={inputs.length+1}>Aucun enregistrement</td></tr>}
-
+        {displayDatas.length == 0 && !errors && <tr className="border text-center my-5 p-2"><td colSpan={inputs.length+1}>Aucun enregistrement</td></tr>}
+        {displayDatas.length == 0 &&  errors && <tr className="border text-center my-5 p-2 text-red-500">
+            <td colSpan={inputs.length+1} className="p-2">{errors}</td></tr>}
     </>
     
   )

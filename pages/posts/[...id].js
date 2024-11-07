@@ -18,28 +18,39 @@ export default function Post() {
   const except = ["isarchived", "isdestroyed"];
   const hidden = ["user_id", "post_id"];
   const [isLoading, setIsLoading] = useState(false);
+  const [errors,setErrors]=useState("")
 
   useEffect(() => {
     setIsLoading(true);
     if (router.query.id != undefined && !isNaN(router.query.id)) {
       (async () => {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/${router.query.id}`
-        );
 
-        // console.log(response);
+        try{
 
+        
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/${router.query.id}`);
         const result = await response.json();
 
-        if (result.result) {
+        if (result.result) 
+          {
           // console.log(result.result);
           setArticle(result.data[0]);
           const entity = { user_id: 2, post_id: Number(router.query.id[0]) };
           dispatch(addEntity(entity));
           setIsLoading(false);
-        } else {
+        } 
+        else 
+        {
           router.push("/");
         }
+      }
+      catch(error)
+      {
+        setErrors("Impossible de récupérer le contenu de la base de données.")
+        console.error(error)
+        setIsLoading(false);
+      }
+
       })();
     }
     return () => {
@@ -53,16 +64,24 @@ export default function Post() {
     <Layout>
       <div className="flex flex-col w-full items-center justify-center mb-5">
         {isLoading && (
-          <div className="flex h-[80vh] items-center justify-center my-5">
+          <div className="flex min-h-[65vh] items-center justify-center my-5">
             <PuffLoader color={"white"} cssOverride={{ textAlign: "center" }} />
           </div>
         )}
 
-        {!isLoading && article == null && (
-          <div className="h-[80vh] w-full flex items-center justify-center text-3xl">
+        {!isLoading && article == null && !errors && (
+          <div className="min-h-[65vh] w-full flex items-center justify-center text-3xl">
             Aucun article
           </div>
         )}
+
+        {!isLoading && errors && (
+          <div className="min-h-[65vh] w-full flex items-center justify-center text-3xl">
+            {errors}
+          </div>
+        )}
+
+
         {!isLoading && article && (
           <article className="w-full h-full p-1 lg:p-4 ">
             <h1 className="text-lg lg:text-3xl mb-2 px-4 text-wrap">
@@ -108,7 +127,7 @@ export default function Post() {
               </div>
             </div>
 
-            <div className="w-full flex flex-col items-start justify-start mt-5">
+            <div className="w-full flex flex-col items-start justify-center mt-5 border">
              {/* Liens vers les autres articles sous forme de carousel par exemple */}
              <Getposts title={article.categorie} incrementer={1} categorie={article.categorie_id} article={article.post_id} little/>
             </div>

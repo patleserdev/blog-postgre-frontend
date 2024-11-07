@@ -16,6 +16,7 @@ import { reloading } from "../reducers/reloader";
 import { deleteFile } from "../reducers/file";
 import { openModal } from "../reducers/modal";
 import { deleteEntity } from '../reducers/entity';
+import { PuffLoader } from "react-spinners";
 
 export default function Form({ schema, except = [], hidden = [],condensed,title = null}) {
 
@@ -37,6 +38,7 @@ export default function Form({ schema, except = [], hidden = [],condensed,title 
   const [success, setSuccess] = useState([]);
   const [toEdit, setToEdit] = useState(editMode ? true : false);
   const [identifier, setIdentifier] = useState("");
+  const [isLoading,setIsLoading]=useState(false)
 
   // console.log('formDATA',formData);
   // console.log('entity',entity);
@@ -168,6 +170,7 @@ export default function Form({ schema, except = [], hidden = [],condensed,title 
    */
   const uploadImage = async () => {
     if (file) {
+      setIsLoading(true)
       const formDataToUpload = new FormData();
       formDataToUpload.append("file", file[0], file[0].name);
 
@@ -194,11 +197,14 @@ export default function Form({ schema, except = [], hidden = [],condensed,title 
             ...prev,
             "Error uploading file:" + response.statusText,
           ]);
+          setIsLoading(false)
           return null;
         }
       } catch (error) {
         // console.error("Network error:", error);
         setErrors((prev) => [...prev, "Network error:" + error]);
+        setIsLoading(false)
+
         return null;
       }
     }
@@ -215,7 +221,10 @@ export default function Form({ schema, except = [], hidden = [],condensed,title 
     if (entity && toEdit ) {
       entityToEdit = `/${entity[identifier]}`;
     }
-
+    try
+    {
+      setIsLoading(true)
+    
     const response = await fetch(`${BACKEND_URL}/${schema}${entityToEdit}`, {
       method: !toEdit || entity[identifier] == undefined ? "POST" : "PUT",
       headers: {
@@ -230,6 +239,7 @@ export default function Form({ schema, except = [], hidden = [],condensed,title 
       const result = await response.json();
 
       if (result.result) {
+        setIsLoading(false)
         setSuccess(result.message);
         setTimeout(() => {
           setSuccess("");
@@ -244,10 +254,23 @@ export default function Form({ schema, except = [], hidden = [],condensed,title 
         
         dispatch(openModal(false));
       } else {
+        setIsLoading(false)
         setErrors((prev) => [...prev, result.error]);
       }
       // console.log("addpostresult", result);
     }
+
+  }
+  catch(error)
+  {
+    setIsLoading(false)
+    setErrors((prev) => [
+      ...prev,
+      "Impossible de transmettre à la base de données, réessayez ultérieurement."
+    ]);
+    console.error(error)
+    // setIsLoading(false);
+  }
   };
 
   /**
@@ -566,7 +589,10 @@ export default function Form({ schema, except = [], hidden = [],condensed,title 
   }
 
   return (
-    <div className={condensed ? "w-full" : " w-full p-1"}>
+    <>
+    {isLoading && <div className="min-h-[40vh] flex items-center justify-center"><PuffLoader color={'white'} cssOverride={{textAlign:'center'}}/></div>}
+    
+    {!isLoading && <div className={condensed ? "w-full" : " w-full p-1"}>
       {displayLabel}
       <form onSubmit={(e) => handleSubmit(e)}>
         {displayInputs}
@@ -588,6 +614,7 @@ export default function Form({ schema, except = [], hidden = [],condensed,title 
 
         <div className="text-green-500">{success}</div>
       </div>
-    </div>
+    </div>}
+    </>
   );
 }

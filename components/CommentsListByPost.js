@@ -37,7 +37,7 @@ export default function CommentsListByPost({ post }) {
       )}
       {comments && (
         <p>
-          <i> {comments.length} commentaires</i>
+          <i> {comments.length} commentaire{comments.length > 1 ? 's' : null}</i>
         </p>
       )}
       {comments &&

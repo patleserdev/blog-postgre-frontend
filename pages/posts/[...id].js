@@ -117,7 +117,7 @@ export default function Post() {
                   schema={schema}
                   except={except}
                   hidden={hidden}
-                  title="Commenter"
+                  title="Commenter l'article"
                   condensed
                 />
               </div>
@@ -128,9 +128,9 @@ export default function Post() {
               </div>
             </div>
 
-            <div className="p-1 md:p-0 w-full flex flex-col items-start justify-center mt-5 md:mt-3">
+            <div className="p-1 md:p-0 w-full flex flex-col items-start justify-center lg:justify-start mt-5 md:mt-4">
              {/* Liens vers les autres articles sous forme de carousel par exemple */}
-             <h3 className="px-3 text-xl md:text-lg underline">Articles de la catégorie</h3>
+             <h3 className="px-3 text-xl md:text-lg underline ">Articles de la catégorie</h3>
              <Getposts title={article.categorie} incrementer={1} categorie={article.categorie_id} article={article.post_id} little/>
             </div>
 

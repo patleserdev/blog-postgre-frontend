@@ -73,7 +73,7 @@ export default function Getdatas({ source,inputs,identifier }) {
                 <Editbutton source={source} entity={data} editMode={true}/> 
                 <Deletebutton source={source}  id={data[identifier]}/>
                 </div></td>)
-           displayDatas.push(<tr key={i}>{content}</tr>)
+           displayDatas.push(<tr key={i} className={ i %2 == 0 ? "bg-slate-700" : "bg-slate-800"}>{content}</tr>)
            i++
        }
        

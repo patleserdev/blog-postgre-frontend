@@ -109,7 +109,7 @@ export default function Post() {
                 />
               </div>
             </div>
-            <div className="flex flex-row justify-around items-around">
+            <div className="flex flex-col md:flex-row justify-around items-around">
             <div className="w-full flex flex-col items-start justify-start mt-5 mx-1">
               {/* <button className="border p-2 text-xl hover:bg-white hover:text-slate-500 transition-all">Commenter</button> */}
               <div className="w-full lg:w-full border">
@@ -123,12 +123,14 @@ export default function Post() {
               </div>
 
               <div className="w-full lg:w-full mt-1">
+                
                 <CommentsListByPost post={Number(router.query.id[0])} />
               </div>
             </div>
 
-            <div className="w-full flex flex-col items-start justify-center mt-5 border">
+            <div className="p-1 md:p-0 w-full flex flex-col items-start justify-center mt-5 md:mt-3">
              {/* Liens vers les autres articles sous forme de carousel par exemple */}
+             <h3 className="px-3 text-xl md:text-lg underline">Articles de la catégorie</h3>
              <Getposts title={article.categorie} incrementer={1} categorie={article.categorie_id} article={article.post_id} little/>
             </div>
 

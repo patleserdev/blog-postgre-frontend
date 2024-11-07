@@ -93,7 +93,7 @@ console.log('post in getposts',posts)
     
     <div
       key={incrementer}
-      className={little ? "w-full flex flex-col sm:flex-row items-center justify-center lg:flex-wrap" : "my-5 mx-3 flex flex-col sm:flex-row items-center justify-center lg:flex-wrap"}
+      className={little ? "w-full flex flex-col md:flex-row items-center justify-center lg:flex-wrap" : "my-5 mx-3 flex flex-col sm:flex-row items-center justify-center lg:flex-wrap"}
     >
       <div className={little ? "sm:w-[5%] cursor-pointer flex flex-row items-center justify-center text-center" :"mx-2 sm:w-5 cursor-pointer flex flex-row items-center justify-center text-center"}>
         {posts != undefined && prev != 0 && (
@@ -105,11 +105,11 @@ console.log('post in getposts',posts)
         )}
       </div>
 
-      <div className={little ? "w-[90%] flex flex-col sm:flex-row sm:flex-wrap  items-center justify-around": "w-[90%] flex flex-col sm:flex-row sm:flex-wrap  items-center justify-around"}>
+      <div className={little ? "h-full w-full flex flex-col sm:flex-row md:flex-col justify-center xl:flex-row items-center xl:justify-around": "w-[90%] flex flex-col sm:flex-row sm:flex-wrap  items-center justify-around"}>
         {posts != undefined &&
           posts.map((post, i) =>
             i >= prev && i <= next ? (
-              <div key={i} className={little ? "w-full sm:w-[45%]  md:w-[32%] lg:w-[30%] px-2" :"w-full sm:w-[45%]  md:w-[32%] lg:w-[25%] px-2"}>
+              <div key={i} className={little ? "w-full flex justify-center lg:w-full xl:w-[33%]  px-2" :"w-full sm:w-[45%]  md:w-[32%] lg:w-[25%] px-2"}>
                 {/* <ClassicCardWithLink post={post} key={i}/> */}
                 <HoveredCardWithLink
                   key={i}

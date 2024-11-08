@@ -1,6 +1,6 @@
 import Image from "next/legacy/image.js";
 
-export default function HoveredCardWithLink({ post, list, title,little }) {
+export default function HoveredCardWithLink({ post, list, title,little,full }) {
   return (
     <article
       key={list}
@@ -11,9 +11,11 @@ export default function HoveredCardWithLink({ post, list, title,little }) {
       <div className="w-full h-full relative">
         <div className="h-full relative z-0">
           {post.picture_url && <Image src={post.picture_url} layout="fill" />}
+          {!full &&
           <h2 className="h-[15%] bg-white text-slate-500 absolute top-0 left-0 z-5 px-2 uppercase flex items-center justify-center">
             {decodeURI(title)}
           </h2>
+          }
         </div>
       </div>
 

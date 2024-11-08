@@ -1,4 +1,4 @@
-import localFont from "next/font/local";
+import { useRouter } from "next/router";
 import Head from "next/head.js";
 import Getposts from "@/components/Getposts";
 import { useEffect, useState } from "react";
@@ -6,19 +6,9 @@ import { useEffect, useState } from "react";
 import Layout from "@/components/Layout.js";
 import { PuffLoader } from "react-spinners";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
-
 export default function Home() {
   // const BACKEND_URL='http://localhost:3000'
+  const router = useRouter();
   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -34,9 +24,11 @@ export default function Home() {
           "Content-Type": "application/json",
         },
       });
-      console.log(response);
+      // console.log(response);
 
       const result = await response.json();
+
+    
 
       if (result) {
         setCategories(result.data);
@@ -48,10 +40,12 @@ export default function Home() {
       setIsLoading(false);
     }
   };
-  console.log(errors);
+  // console.log(errors);
   useEffect(() => {
     getCategories();
   }, []);
+
+  console.log(categories)
   return (
     <>
       <Head>
@@ -80,23 +74,18 @@ export default function Home() {
             <>
               <h1 className="text-2xl md:px-5 md:mb-2 bg-slate-500 p-5">Bienvenue sur Blogin : Votre dose quotidienne de réflexion : Actu et Analyses</h1>
 
-              <h2 className="text-lg md:px-10">Les dernières actus :</h2>
-              <div className="">
-                  <Getposts
-                    incrementer={0}
-                                      
-                  />
-              </div>
-              <h2 className="text-lg md:px-10">Les actualités classées :</h2>
+              <h2 className="text-lg md:px-10">Les actualités dans <span className="capitalize">{router.query.categorie}</span> :</h2>
               {
               categories.map((e, i) => (
+                router.query.categorie == decodeURI(e.title) ?
                 <div className="" key={i}>
                   <Getposts
                     incrementer={e.categorie_id + i}
                     categorie={e.categorie_id}
                     title={e.title}
+                    full
                   />
-                </div>
+                </div> : null
               ))
               }
 

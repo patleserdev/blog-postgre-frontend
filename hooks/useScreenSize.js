@@ -1,10 +1,11 @@
+"use client"
 import { useState, useEffect } from 'react';
 export default function useScreenSize() {
-  const [screenSize, setScreenSize] = useState({
+  const [screenSize, setScreenSize] = useState(typeof window !== "undefined" ? {
     width: window.innerWidth,
     height: window.innerHeight,
     totop:window.scrollY
-  });
+  } : null);
 
   // const [heightToTop, setHeightToTop] = useState(window.scrollY);
 

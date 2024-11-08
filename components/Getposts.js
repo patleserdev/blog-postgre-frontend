@@ -1,3 +1,4 @@
+"use client"
 import { useEffect, useState } from "react";
 import HoveredCardWithLink from "./HoveredCardWithLink";
 import ClassicCardWithLink from "./ClassicCardWithLink.js";
@@ -7,10 +8,15 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import useScreenSize from '@/hooks/useScreenSize'
+import BaseCardComponent from "./BaseCardComponent.js";
+import Link from "next/link.js";
 
-export default function Getposts({ categorie, incrementer, title,little,article = null }) {
+export default function Getposts({ categorie=null, incrementer,title=null,little=null,article = null,full=null }) {
 
-  const screenSize = useScreenSize();
+ 
+    const screenSize = useScreenSize();
+  
+    
 
   // console.log(screenSize.width)
 
@@ -24,20 +30,26 @@ export default function Getposts({ categorie, incrementer, title,little,article 
 
   const getposts = async () => {
 
-   
-
     try
     {
+      const query=categorie ? `bycategory/${categorie}` : `last`
       const response = await fetch(
-        `${BACKEND_URL}/posts/bycategory/${categorie}`
+        `${BACKEND_URL}/posts/${query}`
       );
-      console.log(response)
+      //  console.log(response)
 
       const result = await response.json();
-      console.log(result)
+     
+        // console.log(result)
+      
+       
       if (result) 
       {
-        setPosts(result.data.filter((post)=> post.post_id != article));
+        if(result.data && result.data.length > 0)
+        {
+          setPosts(result.data.filter((post)=> post.post_id != article));
+
+        }
   
       }
     }
@@ -53,9 +65,13 @@ export default function Getposts({ categorie, incrementer, title,little,article 
         
   }, []);
 
-console.log('post in getposts',posts)
+// console.log('post in getposts',posts)
   useEffect(() => {
+
+   
+
     setPrev(0);
+
     if(little)
     {
       setNext(2);
@@ -76,6 +92,7 @@ console.log('post in getposts',posts)
       setNext(1);
       setMax(1)
     }
+  
     
   }, [screenSize]);
 
@@ -89,6 +106,8 @@ console.log('post in getposts',posts)
     setNext(next + 1);
   };
 
+
+
   return (
     
     <div
@@ -96,7 +115,7 @@ console.log('post in getposts',posts)
       className={little ? "w-full flex flex-col sm:flex-row md:flex-row items-center justify-center lg:flex-wrap" : "my-5 mx-3 flex flex-col sm:flex-row items-center justify-center lg:flex-wrap"}
     >
       <div className={little ? "sm:w-[5%] md:w-[15%] cursor-pointer flex flex-row items-center justify-center text-center" :"mx-2 sm:w-5 cursor-pointer flex flex-row items-center justify-center text-center"}>
-        {posts != undefined && prev != 0 && (
+        {posts != undefined && !full &&  prev != 0 && (
           <FontAwesomeIcon
             icon={faChevronLeft}
             onClick={() => handlePrev()}
@@ -105,26 +124,32 @@ console.log('post in getposts',posts)
         )}
       </div>
 
-      <div className={little ? "h-full w-full xl:w-[90%] sm:w-[90%] md:w-[70%] flex flex-col sm:flex-row md:flex-col justify-center xl:flex-row items-center xl:justify-around": "w-[90%] flex flex-col sm:flex-row sm:flex-wrap  items-center justify-around"}>
+      <div className={
+        little ? 
+        "h-full w-full xl:w-[90%] sm:w-[90%] md:w-[70%] flex flex-col sm:flex-row md:flex-col justify-center xl:flex-row items-center xl:justify-around"
+        : 
+        full ?
+        "w-[90%] flex flex-col sm:flex-row sm:flex-wrap items-start justify-start" 
+        :
+        "w-[90%] flex flex-col sm:flex-row sm:flex-wrap items-center justify-around"}>
         {posts != undefined &&
           posts.map((post, i) =>
-            i >= prev && i <= next ? (
-              <div key={i} className={little ? "w-full flex justify-center lg:w-full xl:w-[33%]  px-2" :"w-full sm:w-[45%]  md:w-[32%] lg:w-[25%] px-2"}>
-                {/* <ClassicCardWithLink post={post} key={i}/> */}
-                <HoveredCardWithLink
-                  key={i}
-                  post={post}
-                  list={incrementer + i}
-                  title={title}
-                  little={little ? true : false}
-                />
-              </div>
-            ) : null
+            full == null ? 
+           i >= prev && i <= next ? 
+           (
+            <BaseCardComponent post={post} key={i} little={little} title={title} incrementer={incrementer} categorie={categorie}/>
+            ) 
+            : null
+            :
+            (
+              <BaseCardComponent post={post} key={i} full title={title} incrementer={incrementer}/>
+            ) 
+
           )}
       </div>
 
       <div className={little ? " sm:w-[5%] md:w-[15%] flex items-center justify-center text-center" :"mx-2 sm:w-5 flex items-center justify-center text-center"}>
-        {posts != undefined && next < posts.length-1 && posts.length >= max && (
+        {posts != undefined && !full && next < posts.length-1 && posts.length >= max && (
           <FontAwesomeIcon
             icon={faChevronRight}
             className="rotate-90 sm:rotate-0 cursor-pointer hover:text-black active:text-black transition-all text-lg"
@@ -134,6 +159,16 @@ console.log('post in getposts',posts)
       </div>
 
       {!posts && <div className="w-1/2 p-2">Pas d'articles dans <span className="capitalize">{decodeURI(title)}</span></div>}
+
+      {!full && categorie && 
+      <div className="flex items-start justify-start w-[90%] px-4 mt-2">
+            <Link href={`/categorie/${decodeURI(title)}`} passHref legacyBehavior>
+            <a className="hover:bg-slate-800 transition-all">
+            <h3 className="border p-3 h-12">Voir tous les articles <span className="capitalize">{decodeURI(title)}</span></h3>
+            </a>
+            </Link>
+      </div>
+      }
     </div>
   );
 }

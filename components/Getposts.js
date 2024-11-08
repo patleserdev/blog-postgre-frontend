@@ -160,7 +160,7 @@ export default function Getposts({ categorie=null, incrementer,title=null,little
 
       {!posts && <div className="w-1/2 p-2">Pas d'articles dans <span className="capitalize">{decodeURI(title)}</span></div>}
 
-      {!full && categorie && 
+      {!full && categorie && posts.length > 0 && 
       <div className="flex items-start justify-start w-[90%] px-4 mt-2">
             <Link href={`/categorie/${decodeURI(title)}`} passHref legacyBehavior>
             <a className="hover:bg-slate-800 transition-all">

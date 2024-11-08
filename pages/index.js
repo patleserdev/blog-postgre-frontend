@@ -78,16 +78,16 @@ export default function Home() {
 
           {categories != undefined && !isLoading && (
             <>
-              <h1 className="text-2xl md:px-5 md:mb-2 bg-slate-500 p-5">Bienvenue sur Blogin : Votre dose quotidienne de réflexion : Actu et Analyses</h1>
+              <h1 className="text-2xl md:px-5 md:mb-2 bg-slate-500 p-5 mb-5">Bienvenue sur Blogin : Votre dose quotidienne de réflexion : Actu et Analyses</h1>
 
-              <h2 className="text-lg md:px-10">Les dernières actus :</h2>
+              <h2 className="text-lg px-5 md:px-10">Les dernières actus :</h2>
               <div className="">
                   <Getposts
                     incrementer={0}
                                       
                   />
               </div>
-              <h2 className="text-lg md:px-10">Les actualités classées :</h2>
+              <h2 className="text-lg px-5 md:px-10">Les actualités classées :</h2>
               {
               categories.map((e, i) => (
                 <div className="" key={i}>

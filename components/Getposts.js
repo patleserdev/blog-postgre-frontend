@@ -95,12 +95,12 @@ console.log('post in getposts',posts)
       key={incrementer}
       className={little ? "w-full flex flex-col sm:flex-row md:flex-row items-center justify-center lg:flex-wrap" : "my-5 mx-3 flex flex-col sm:flex-row items-center justify-center lg:flex-wrap"}
     >
-      <div className={little ? "rotate-90 sm:w-[5%] md:w-[15%] cursor-pointer flex flex-row items-center justify-center text-center" :"mx-2 sm:w-5 cursor-pointer flex flex-row items-center justify-center text-center"}>
+      <div className={little ? "sm:w-[5%] md:w-[15%] cursor-pointer flex flex-row items-center justify-center text-center" :"mx-2 sm:w-5 cursor-pointer flex flex-row items-center justify-center text-center"}>
         {posts != undefined && prev != 0 && (
           <FontAwesomeIcon
             icon={faChevronLeft}
             onClick={() => handlePrev()}
-            className="cursor-pointer hover:text-black active:text-black transition-all text-lg text-center"
+            className="rotate-90 md:rotate-0  cursor-pointer hover:text-black active:text-black transition-all text-lg text-center"
           />
         )}
       </div>
@@ -123,11 +123,11 @@ console.log('post in getposts',posts)
           )}
       </div>
 
-      <div className={little ? "rotate-90 sm:w-[5%] md:w-[15%] flex items-center justify-center text-center" :"mx-2 sm:w-5 flex items-center justify-center text-center"}>
+      <div className={little ? " sm:w-[5%] md:w-[15%] flex items-center justify-center text-center" :"mx-2 sm:w-5 flex items-center justify-center text-center"}>
         {posts != undefined && next < posts.length-1 && posts.length >= max && (
           <FontAwesomeIcon
             icon={faChevronRight}
-            className="cursor-pointer hover:text-black active:text-black transition-all text-lg"
+            className="rotate-90 sm:rotate-0 cursor-pointer hover:text-black active:text-black transition-all text-lg"
             onClick={() => handleNext()}
           />
         )}

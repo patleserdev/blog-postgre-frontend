@@ -18,7 +18,7 @@ const Postcategories = () => {
   return (
     <>
       <Head>
-        <title>Blogger - Catégories de Posts</title>
+        <title>Blogin - Catégories de Posts</title>
       </Head>
 
        <Layout>

@@ -17,7 +17,7 @@ const Posts = () => {
   return (
     <>
       <Head>
-        <title>Blogger - Posts</title>
+        <title>Blogin - Posts</title>
       </Head>
 
       <Layout>

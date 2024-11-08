@@ -19,7 +19,7 @@ const Comments = () => {
   return (
     <>
       <Head>
-        <title>Blogger - Commentaires</title>
+        <title>Blogin - Commentaires</title>
       </Head>
 
       <Layout>

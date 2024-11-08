@@ -18,7 +18,7 @@ const Users = () => {
   return (
     <>
       <Head>
-        <title>Blogger - Utilisateurs</title>
+        <title>Blogin - Utilisateurs</title>
       </Head>
       <Layout>
       <div className="flex flex-col w-full items-center justify-center mb-5">

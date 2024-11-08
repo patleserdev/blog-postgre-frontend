@@ -55,7 +55,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Blogger - Accueil</title>
+        <title>Blogin - Accueil</title>
       </Head>
       {/* <div className="grid grid-rows-[0px_1fr_0px] items-start justify-items-start min-h-screen p-8 pb-20 gap-16 sm:p-10 font-[family-name:var(--font-geist-sans)]"> */}
 
@@ -78,7 +78,10 @@ export default function Home() {
 
           {categories != undefined && !isLoading && (
             <>
-              <h1 className="text-2xl md:px-5 md:mb-2 bg-slate-500 p-5 mb-5">Bienvenue sur Blogin : Votre dose quotidienne de réflexion : Actu et Analyses</h1>
+              <h1 className="text-xl md:text-2xl md:px-5 md:mb-2 bg-slate-500 p-5 mb-5 flex flex-col md:flex-row md:justify-start items-start">
+                <span >Bienvenue sur Blogin :</span>
+                <span>"L'Essentiel de l'Info : Ne Ratez Rien des Actualités"</span>
+              </h1>
 
               <h2 className="text-lg px-5 md:px-10">Les dernières actus :</h2>
               <div className="">

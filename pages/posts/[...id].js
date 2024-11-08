@@ -109,7 +109,7 @@ export default function Post() {
                 />
               </div>
             </div>
-            <div className="flex flex-col md:flex-row justify-around items-around">
+            <div className="flex flex-col md:flex-row justify-around items-around mb-2">
             <div className="w-[95%] mx-auto flex flex-col items-start justify-start mt-5 mx-1">
               {/* <button className="border p-2 text-xl hover:bg-white hover:text-slate-500 transition-all">Commenter</button> */}
               <div className="w-full lg:w-full border">

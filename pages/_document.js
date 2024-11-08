@@ -12,7 +12,7 @@ export default function Document() {
           <meta property="og:site_name" content="Blog" />
           <meta
             property="og:description"
-            content="Portfolio d'Alice L - artiste aux multiples facettes"
+            content="Blog branché à une bdd postgreSQL"
           />
           <meta property="og:title" content="Blog" />
           <meta name="twitter:card" content="summary_large_image" />

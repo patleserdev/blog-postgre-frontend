@@ -161,10 +161,10 @@ export default function Getposts({ categorie=null, incrementer,title=null,little
       {!posts && <div className="w-1/2 p-2">Pas d'articles dans <span className="capitalize">{decodeURI(title)}</span></div>}
 
       {!full && categorie && posts.length > 0 && 
-      <div className={little ? "flex items-center justify-center w-[90%] px-4 mt-2 mb-2" : "flex items-start justify-start w-[90%] px-4 mt-2 mb-2"}>
+      <div className={little ? "flex items-center justify-center w-[90%] sm:w-[30%] px-4 mt-2 mb-2" : "flex items-center justify-center md:items-start md:justify-start w-[90%] sm:w-[40%] md:w-[90%] h-full  px-4 mt-2 mb-2"}>
             <Link href={`/categorie/${decodeURI(title)}`} passHref legacyBehavior>
             <a className="hover:bg-slate-800 transition-all">
-            <h3 className="border p-3 h-12">Voir tous les articles <span className="capitalize">{decodeURI(title)}</span></h3>
+            <h3 className="border p-3 h-12 sm:h-full">Voir tous les articles <span className="capitalize">{decodeURI(title)}</span></h3>
             </a>
             </Link>
       </div>

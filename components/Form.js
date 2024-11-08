@@ -17,6 +17,7 @@ import { deleteFile } from "../reducers/file";
 import { openModal } from "../reducers/modal";
 import { deleteEntity } from '../reducers/entity';
 import { PuffLoader } from "react-spinners";
+import { Toaster, toast } from 'sonner'
 
 export default function Form({ schema, except = [], hidden = [],condensed,title = null}) {
 
@@ -241,6 +242,7 @@ export default function Form({ schema, except = [], hidden = [],condensed,title 
       if (result.result) {
         setIsLoading(false)
         setSuccess(result.message);
+        toast.success(result.message)
         setTimeout(() => {
           setSuccess("");
         }, 2000);

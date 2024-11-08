@@ -10,6 +10,8 @@ import { PuffLoader } from "react-spinners";
 import Layout from "@/components/Layout.js";
 import Getposts from "@/components/Getposts.js";
 
+import ReadSpeedTime from "@/components/ReadSpeedTime.js";
+
 export default function Post() {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -58,7 +60,7 @@ export default function Post() {
     };
   }, [router]);
 
-  console.log(article)
+  // console.log(article)
 
   return (
     <Layout>
@@ -83,13 +85,20 @@ export default function Post() {
 
 
         {!isLoading && article && (
-          <article className="w-full h-full p-1 lg:p-4 ">
+          <article className="w-full h-full p-1 lg:p-4 mb-8 ">
             <h1 className="text-lg lg:text-3xl mb-2 px-4 text-wrap">
               {decodeURI(article.title)}
             </h1>
             <h2 className="text-xs lg:text-xl mb-2 px-4 capitalize">
               Catégorie : {decodeURI(article.categorie)}
             </h2>
+            <h3 className="text-xs lg:text-md mb-2 px-4">
+              <div className="w-24 flex flex-row items-center justify-between">
+         
+              <ReadSpeedTime content={decodeURI(article.content)}/>
+              </div>
+            </h3>
+            
             <div className="flex flex-col-reverse lg:flex-row mb-2 ">
               <div className="w-full lg:w-1/2 h-full px-2 ">
                 <p

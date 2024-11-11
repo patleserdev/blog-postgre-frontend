@@ -112,6 +112,7 @@ export const datas=[
   source:'users',
   label:'Utilisateurs',
   identifier:'user_id',
+  mapped:false,
   inputs:
   [
     // {
@@ -153,6 +154,9 @@ export const datas=[
   source:'posts',
   label:'posts',
   identifier:'post_id',
+  mapped:true,
+  mappedUrl:'posts',
+  mappedIdentifier:'post_id',
   inputs:
   [
     // {
@@ -228,6 +232,7 @@ export const datas=[
   source:'comments',
   label:'Commentaires',
   identifier:'comment_id',
+  mapped:false,
   inputs:
   [
     {
@@ -292,6 +297,9 @@ export const datas=[
   source:'postcategories',
   label:'Catégories de posts',
   identifier:'categorie_id',
+  mapped:true,
+  mappedUrl:'categorie',
+  mappedIdentifier:'title',
   inputs:
   [
     // {

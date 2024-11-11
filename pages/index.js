@@ -80,7 +80,7 @@ export default function Home() {
             <>
               <h1 className="text-xl md:text-2xl md:px-5 md:mb-2 bg-slate-500 p-5 mb-5 flex flex-col md:flex-row md:justify-start items-start">
                 <span >Bienvenue sur Blogin :</span>
-                <span>"L'Essentiel de l'Info : Ne Ratez Rien des Actualités"</span>
+                <span className="mx-2">L'Essentiel de l'Info : Ne Ratez Rien des Actualités</span>
               </h1>
 
               <h2 className="text-lg px-5 md:px-10">Les dernières actus :</h2>

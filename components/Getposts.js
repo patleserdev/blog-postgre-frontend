@@ -67,9 +67,6 @@ export default function Getposts({ categorie=null, incrementer,title=null,little
 
 // console.log('post in getposts',posts)
   useEffect(() => {
-
-   
-
     setPrev(0);
 
     if(little)

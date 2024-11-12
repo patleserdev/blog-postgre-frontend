@@ -1,19 +1,52 @@
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import Image from 'next/legacy/image.js'
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUnlock} from "@fortawesome/free-solid-svg-icons";
+import {
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+} from "@headlessui/react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import Image from "next/legacy/image.js";
 
-const navigation = [
-  { name: 'Home', href: '/', current: true },
-  
-]
+import getcategories from "../pages/api/getcategories";
+import { useEffect, useState } from "react";
+import Router, { useRouter } from "next/router.js";
+
+const navigation = [{ name: "Home", href: "/", current: true }];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(" ");
 }
 
 export default function Navbar2() {
+  const [categories,setCategories]=useState([])
+
+  const router=useRouter()
+  console.log(router)
+  useEffect(() => {
+    (async () => {
+      const categoriesDatas = await getcategories();
+      if (categoriesDatas) 
+      {
+        setCategories(categoriesDatas)
+        // console.log(categoriesDatas);
+
+      }
+    })()
+  }, []);
+
+  if (categories)
+  {
+    categories.map((e)=> e.isactive & !navigation.find((one)=> one.name == decodeURI(e.url).charAt(0).toUpperCase()+decodeURI(e.url).slice(1,e.url.length).toLowerCase()) ? navigation.push(
+      {
+        name:decodeURI(e.url).charAt(0).toUpperCase()+decodeURI(e.url).slice(1,e.url.length).toLowerCase() ,
+        href:`/categorie/${e.url}`,
+        current:false}) : null)
+
+  }
+
   return (
     <Disclosure as="nav" className="bg-gray-800 mt-2">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -23,19 +56,25 @@ export default function Navbar2() {
             <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
               <span className="absolute -inset-0.5" />
               <span className="sr-only">Open main menu</span>
-              <Bars3Icon aria-hidden="true" className="block h-6 w-6 group-data-[open]:hidden" />
-              <XMarkIcon aria-hidden="true" className="hidden h-6 w-6 group-data-[open]:block" />
+              <Bars3Icon
+                aria-hidden="true"
+                className="block h-6 w-6 group-data-[open]:hidden"
+              />
+              <XMarkIcon
+                aria-hidden="true"
+                className="hidden h-6 w-6 group-data-[open]:block"
+              />
             </DisclosureButton>
           </div>
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex flex-col shrink-0 items-center justify-center">
-            <Image
-          alt="logo"
-          src="/assets/logo-light.png"
-          width={80}
-          height={80}
-          priority
-        />
+              <Image
+                alt="logo"
+                src="/assets/logo-light.png"
+                width={80}
+                height={80}
+                priority
+              />
             </div>
             <div className=" hidden sm:ml-6 sm:flex ">
               <div className="flex items-center justify-center space-x-4">
@@ -43,10 +82,12 @@ export default function Navbar2() {
                   <a
                     key={item.name}
                     href={item.href}
-                    aria-current={item.current ? 'page' : undefined}
+                    aria-current={(router.asPath).toLowerCase() == item.href ? "page" : undefined}
                     className={classNames(
-                      item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                      ' rounded-md px-3 py-2 text-sm font-medium',
+                      (router.asPath).toLowerCase() == item.href.toLowerCase()
+                        ? "bg-gray-900 text-white"
+                        : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                      " rounded-md px-3 py-2 text-sm font-medium capitalize "
                     )}
                   >
                     {item.name}
@@ -71,10 +112,20 @@ export default function Navbar2() {
                 <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 p-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800  transition-all">
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">Open user menu</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
-                </svg>
-
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"
+                    />
+                  </svg>
                 </MenuButton>
               </div>
               <MenuItems
@@ -126,10 +177,12 @@ export default function Navbar2() {
               key={item.name}
               as="a"
               href={item.href}
-              aria-current={item.current ? 'page' : undefined}
+              aria-current={item.current ? "page" : undefined}
               className={classNames(
-                item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                'block rounded-md px-3 py-2 text-base font-medium',
+                item.current
+                  ? "bg-gray-900 text-white"
+                  : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                "block rounded-md px-3 py-2 text-base font-medium"
               )}
             >
               {item.name}
@@ -138,5 +191,5 @@ export default function Navbar2() {
         </div>
       </DisclosurePanel>
     </Disclosure>
-  )
+  );
 }

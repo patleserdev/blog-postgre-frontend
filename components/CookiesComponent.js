@@ -7,7 +7,7 @@ export default function CookiesComponent(){
 
   useEffect(()=>{
 
-    console.log("cookie",getCookieConsentValue("blogin"));
+    // console.log("cookie",getCookieConsentValue("blogin"));
   },[])
 
 

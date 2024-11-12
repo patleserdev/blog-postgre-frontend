@@ -107,232 +107,226 @@
   ]
  */
 
-export const datas=[
+export const datas = [
   {
-  source:'users',
-  label:'Utilisateurs',
-  identifier:'user_id',
-  mapped:false,
-  inputs:
-  [
-    // {
-    //   label:'ID utilisateur',
-    //   field :'user_id',
-    //   type:'number',
-    //    placeholder:'l\'ID utilisateur',
-    //   display:true,
-    //   displayinselect:'id',
-    //  },
-    {
-      label:'nom d\'utilisateur',
-      field :'username',
-      type:'string',
-      required:true,
-      placeholder:'le nom d\'utilisateur',
-      display:true,
-      displayinselect:'username'
-     }
-     ,{
-      label:'email',
-      field:'email',
-      type:'string',
-      required:true,
-      placeholder:'l\'adresse mail',
-      display:true,
-      displayinselect:'email'
-     },
-     {
-      label:'Actif ?',
-      field:'isactive',
-      type:'boolean',
-      placeholder:'Actif',
-      display:true
-     }
-  ]
-},
-{
-  source:'posts',
-  label:'posts',
-  identifier:'post_id',
-  mapped:true,
-  mappedUrl:'posts',
-  mappedIdentifier:'post_id',
-  inputs:
-  [
-    // {
-    //   label:'ID post',
-    //   field :'post_id',
-    //   type:'number',
-      
-    //   placeholder:'l\'id du post',
-    //   display:true
-    //  },
-    {
-      label:'Titre du post',
-      field :'title',
-      type:'string',
-      required:true,
-      placeholder:'le titre du post',
-      display:true
-     }
-     ,{
-      label:'Contenu du post',
-      field:'content',
-      type:'longtext',
-      required:true,
-      placeholder:'le contenu du post',
-      display:false
-     },
-     {
-      label:'Catégorie',
-      field:'categorie_id',
-      type:'entity',
-      entity:'postcategories',
-      displayinselect:'title',
-      valueinselect:'categorie_id',
-      comments:'permet de choisir la catégorie dans la liste des catégories',
-      required:true,
-      placeholder:'Choisir la catégorie',
-      display:true
-     }
-     ,{
-      label:'Archivé',
-      field:'isarchived',
-      type:'boolean',
-      required:false,
-      placeholder:'Cocher s\'il est archivé',
-      display:true
-     }
-     ,{
-      label:'Détruit',
-      field:'isdestroyed',
-      type:'boolean',
-      required:false,
-      placeholder:'Cocher s\'il est détruit',
-      display:true
-     }
-     ,{
-      label:'Image',
-      field:'picture_url',
-      type:'upload',
-      required:false,
-      placeholder:'Ajoute l\'image',
-      display:true
-     }
-    //  ,{
-    //   label:'Public_ID',
-    //   field:'public_id',
-    //   type:'none',
-    //   required:false,
-      
-    //  }
-  ]
-},
-{
-  source:'comments',
-  label:'Commentaires',
-  identifier:'comment_id',
-  mapped:false,
-  inputs:
-  [
-    {
-      label:'Titre',
-      field :'title',
-      type:'string',
-      required:true,
-      placeholder:'le nom',
-      display:true
-     }
-     ,{
-      label:'Contenu',
-      field:'content',
-      type:'longtext',
-      required:true,
-      placeholder:'le contenu du commentaire',
-      display:true
-     }
-     ,{
-      label:'Archivé ?',
-      field:'isarchived',
-      type:'boolean',
-      required:false,
-      display:true
-     }
-     ,{
-      label:'Détruit ?',
-      field:'isdestroyed',
-      type:'boolean',
-      required:false,
-      display:true
-      
-     },
-     {
-      label:'Utilisateur',
-      field:'user_id',
-      type:'entity',
-      entity:'users',
-      displayinselect:'username',
-      valueinselect:'user_id',
-      comments:'permet de choisir l\'utilisateur dans la liste d\'utilisateur',
-      required:true,
-      placeholder:'Choisir l\'utilisateur',
-      display:true
-     },
-     {
-      label:'Post',
-      field:'post_id',
-      type:'entity',
-      entity:'posts',
-      displayinselect:'title',
-      valueinselect:'post_id',
-      comments:'permet de choisir le post dans la liste de posts',
-      required:true,
-      placeholder:'Choisir le post',
-      display:true
-     }
-  ]
-},
+    source: "postcategories",
+    label: "Catégories de posts",
+    identifier: "categorie_id",
+    mapped: true,
+    mappedUrl: "categorie",
+    mappedIdentifier: "title",
+    inputs: [
+      // {
+      //   label:'ID catégorie',
+      //   field :'categorie_id',
+      //   type:'number',
 
-{
-  source:'postcategories',
-  label:'Catégories de posts',
-  identifier:'categorie_id',
-  mapped:true,
-  mappedUrl:'categorie',
-  mappedIdentifier:'title',
-  inputs:
-  [
-    // {
-    //   label:'ID catégorie',
-    //   field :'categorie_id',
-    //   type:'number',
-      
-    //   placeholder:'l\'id de la catégorie',
-    //   display:true
-    //  },
-    {
-      label:'Titre',
-      field :'title',
-      type:'string',
-      required:true,
-      placeholder:'le titre',
-      display:true
-     }
-     ,{
-      label:'Description',
-      field:'description',
-      type:'string',
-      required:true,
-      placeholder:'la description',
-      display:true
-     }
-     ,{
-      label:'Actif ?',
-      field:'isactive',
-      type:'boolean',
-      placeholder:'si la catégorie est active ',
-      display:true
-     }
-  ]
-},
-]
+      //   placeholder:'l\'id de la catégorie',
+      //   display:true
+      //  },
+      {
+        label: "Titre",
+        field: "title",
+        type: "string",
+        required: true,
+        placeholder: "le titre",
+        display: true,
+      },
+      {
+        label: "Description",
+        field: "description",
+        type: "string",
+        required: true,
+        placeholder: "la description",
+        display: true,
+      },
+      {
+        label: "Actif ?",
+        field: "isactive",
+        type: "boolean",
+        placeholder: "si la catégorie est active ",
+        display: true,
+      },
+    ],
+  },
+  {
+    source: "users",
+    label: "Utilisateurs",
+    identifier: "user_id",
+    mapped: false,
+    inputs: [
+      // {
+      //   label:'ID utilisateur',
+      //   field :'user_id',
+      //   type:'number',
+      //    placeholder:'l\'ID utilisateur',
+      //   display:true,
+      //   displayinselect:'id',
+      //  },
+      {
+        label: "nom d'utilisateur",
+        field: "username",
+        type: "string",
+        required: true,
+        placeholder: "le nom d'utilisateur",
+        display: true,
+        displayinselect: "username",
+      },
+      {
+        label: "email",
+        field: "email",
+        type: "string",
+        required: true,
+        placeholder: "l'adresse mail",
+        display: true,
+        displayinselect: "email",
+      },
+      {
+        label: "Actif ?",
+        field: "isactive",
+        type: "boolean",
+        placeholder: "Actif",
+        display: true,
+      },
+    ],
+  },
+  {
+    source: "posts",
+    label: "posts",
+    identifier: "post_id",
+    mapped: true,
+    mappedUrl: "posts",
+    mappedIdentifier: "post_id",
+    inputs: [
+      // {
+      //   label:'ID post',
+      //   field :'post_id',
+      //   type:'number',
+
+      //   placeholder:'l\'id du post',
+      //   display:true
+      //  },
+      {
+        label: "Titre du post",
+        field: "title",
+        type: "string",
+        required: true,
+        placeholder: "le titre du post",
+        display: true,
+      },
+      {
+        label: "Contenu du post",
+        field: "content",
+        type: "longtext",
+        required: true,
+        placeholder: "le contenu du post",
+        display: false,
+      },
+      {
+        label: "Catégorie",
+        field: "categorie_id",
+        type: "entity",
+        entity: "postcategories",
+        displayinselect: "title",
+        valueinselect: "categorie_id",
+        comments: "permet de choisir la catégorie dans la liste des catégories",
+        required: true,
+        placeholder: "Choisir la catégorie",
+        display: true,
+      },
+      {
+        label: "Archivé",
+        field: "isarchived",
+        type: "boolean",
+        required: false,
+        placeholder: "Cocher s'il est archivé",
+        display: true,
+      },
+      {
+        label: "Détruit",
+        field: "isdestroyed",
+        type: "boolean",
+        required: false,
+        placeholder: "Cocher s'il est détruit",
+        display: true,
+      },
+      {
+        label: "Image",
+        field: "picture_url",
+        type: "upload",
+        required: false,
+        placeholder: "Ajoute l'image",
+        display: true,
+      },
+      //  ,{
+      //   label:'Public_ID',
+      //   field:'public_id',
+      //   type:'none',
+      //   required:false,
+
+      //  }
+    ],
+  },
+  {
+    source: "comments",
+    label: "Commentaires",
+    identifier: "comment_id",
+    mapped: false,
+    inputs: [
+      {
+        label: "Titre",
+        field: "title",
+        type: "string",
+        required: true,
+        placeholder: "le nom",
+        display: true,
+      },
+      {
+        label: "Contenu",
+        field: "content",
+        type: "longtext",
+        required: true,
+        placeholder: "le contenu du commentaire",
+        display: true,
+      },
+      {
+        label: "Archivé ?",
+        field: "isarchived",
+        type: "boolean",
+        required: false,
+        display: true,
+      },
+      {
+        label: "Détruit ?",
+        field: "isdestroyed",
+        type: "boolean",
+        required: false,
+        display: true,
+      },
+      {
+        label: "Utilisateur",
+        field: "user_id",
+        type: "entity",
+        entity: "users",
+        displayinselect: "username",
+        valueinselect: "user_id",
+        comments: "permet de choisir l'utilisateur dans la liste d'utilisateur",
+        required: true,
+        placeholder: "Choisir l'utilisateur",
+        display: true,
+      },
+      {
+        label: "Post",
+        field: "post_id",
+        type: "entity",
+        entity: "posts",
+        displayinselect: "title",
+        valueinselect: "post_id",
+        comments: "permet de choisir le post dans la liste de posts",
+        required: true,
+        placeholder: "Choisir le post",
+        display: true,
+      },
+    ],
+  },
+];

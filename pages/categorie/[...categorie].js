@@ -36,7 +36,7 @@ export default function Home() {
       }
     } catch (error) {
       setErrors("Impossible de récupérer le contenu de la base de données.");
-      console.error(error);
+      // console.error(error);
       setIsLoading(false);
     }
   };
@@ -45,7 +45,7 @@ export default function Home() {
     getCategories();
   }, []);
 
-  console.log(categories)
+  // console.log(categories)
   return (
     <>
       <Head>
@@ -74,7 +74,7 @@ export default function Home() {
             <>
               <h1 className="text-2xl md:px-5 md:mb-2 bg-slate-500 p-5">Bienvenue sur Blogin : Votre dose quotidienne de réflexion : Actu et Analyses</h1>
 
-              <h2 className="text-lg md:px-10">Les actualités dans <span className="capitalize">{router.query.categorie}</span> :</h2>
+              <h2 className="text-lg md:px-10 p-5">Les actualités dans <span className="capitalize">{router.query.categorie}</span> :</h2>
               {
               categories.map((e, i) => (
                 router.query.categorie == decodeURI(e.title) ?

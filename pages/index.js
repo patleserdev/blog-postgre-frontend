@@ -34,7 +34,7 @@ export default function Home() {
           "Content-Type": "application/json",
         },
       });
-      console.log(response);
+      // console.log(response);
 
       const result = await response.json();
 
@@ -48,7 +48,7 @@ export default function Home() {
       setIsLoading(false);
     }
   };
-  console.log(errors);
+  // console.log(errors);
   useEffect(() => {
     getCategories();
   }, []);

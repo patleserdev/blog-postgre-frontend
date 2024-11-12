@@ -9,6 +9,7 @@ export default function HoveredCardWithLink({ post, list, title,little,full }) {
         "w-full h-[15rem] sm:h-[15rem] md:h-[18rem] lg:h-[13rem] xl:w-[20rem] xl:h-[15rem] border relative m-2"}
     >
       <div className="w-full h-full relative">
+   
         <div className="h-full relative z-0">
           {post.picture_url && <Image src={post.picture_url} layout="fill" />}
           {!full &&

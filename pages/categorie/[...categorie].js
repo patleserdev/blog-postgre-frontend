@@ -89,7 +89,7 @@ export default function Home() {
               ))
               }
 
-              {categories.length == 0 && <p>Aucun article dans cette catégorie</p>}
+              {categories.length == 0 && <div className="md:px-10 p-5"><p>Aucun article dans cette catégorie</p></div>}
 
             </>
           )}

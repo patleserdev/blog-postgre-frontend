@@ -5,8 +5,9 @@ import Editbutton from "./Editbutton.js";
 import Deletebutton from "./Deletebutton.js";
 import Image from "next/image.js";
 import { PuffLoader } from "react-spinners";
+import { SortBy } from "../modules/Sort"
 
-export default function Getdatas({ source,inputs,identifier }) {
+export default function Getdatas({ source,inputs,identifier,filter }) {
     // const BACKEND_URL="http://localhost:3000"
     const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
     const [datas,setDatas]=useState([])
@@ -18,17 +19,29 @@ export default function Getdatas({ source,inputs,identifier }) {
         (async()=>{
             setIsLoading(true)
             try
-            {
-
+            {            
             
            const response= await fetch(`${BACKEND_URL}/${source}`)
+    
             if(response)
             {
                 const result = await response.json()
                 if(result)
                 {
-                    // console.log(result)
-                    setDatas(result.data)
+                     console.log(result)
+                    if (filter)
+                        {
+                            console.log('datas',result.data)
+                            const filteredDatas=SortBy(result.data,filter)
+                            console.log('filtered',filteredDatas)
+                            setDatas(filteredDatas)
+                        }
+                        else
+                        {
+                            setDatas(result.data)
+                        }
+                        //filter
+                    
                 }
                
             }
@@ -41,12 +54,14 @@ export default function Getdatas({ source,inputs,identifier }) {
                 setIsLoading(false);
             }
         })()
-    },[reload])
+    },[reload,filter])
 
     const displayDatas=[]
     let i=0
     if(datas)
     {
+ 
+
       for(let data of datas)
         {
            let content=[]
@@ -68,8 +83,8 @@ export default function Getdatas({ source,inputs,identifier }) {
             {decodeURI(data[input]).length < 20 ? decodeURI(data[input]) : decodeURI(data[input]).slice(0,50)+'...' } 
             
             </td>) )   
-            content.push(<td className="p-2 w-full sm:w-[30%]" key={i}>
-                <div className="flex flex-col md:flex-row items-center justify-center">
+            content.push(<td className={`md:p-2 w-1/5 sm:w-[30%]`} key={i}>
+                <div className="flex flex-col lg:flex-row items-center justify-center">
                 <Editbutton source={source} entity={data} editMode={true}/> 
                 <Deletebutton source={source}  id={data[identifier]}/>
                 </div></td>)

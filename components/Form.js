@@ -70,7 +70,7 @@ export default function Form({ schema, except = [], hidden = [],condensed,title 
    */
   const handleChange = (e) => {
     // version boolean
-    // console.log(e)
+     console.log('ca bouge ici',e)
 
     if (e.target.type == "checkbox") {
       setFormData((prev) => ({

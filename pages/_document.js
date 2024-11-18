@@ -4,11 +4,14 @@ export default function Document() {
   return (
     <Html lang="fr">
        <Head>
+        
           <link rel="icon" href="/favicon.ico" />
           <meta
             name="description"
             content="Blog branché à une bdd postgreSQL"
           />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
           <meta property="og:site_name" content="Blog" />
           <meta
             property="og:description"

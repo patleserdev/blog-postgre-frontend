@@ -36,6 +36,7 @@ export default function GetSelectableDatas({ source,counter,valueinselect,displa
         })()
     },[])
 
+    console.log('datasin getselectable',datas)
     const displayDatas=[]
     // displayDatas.push(<option value="" disabled key="selector">Sélectionnez</option>)
     // datas.map((e)=> displayDatas.push({value:e,label:e}))

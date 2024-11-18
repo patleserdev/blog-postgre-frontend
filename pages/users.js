@@ -1,18 +1,34 @@
 import Form from "../components/Form.js";
 import List from "../components/List.js";
 import Addbutton from "@/components/Addbutton.js";
-import Navbar from "@/components/Navbar";
 import Head from "next/head.js";
 import Modal from "@/components/Modal";
 import { useSelector } from "react-redux";
-import Footer from "@/components/Footer.js";
 import Layout from "@/components/Layout.js";
+import { useState,useEffect } from "react";
+import Router, { useRouter } from "next/router.js";
+import { useAuth } from "../hooks/AuthProvider";
 
 export const metadata = {
   title: "Blog - Utilisateurs",
   description: "...",
 };
 const Users = () => {
+  const [isAuth, setIsAuth] = useState(false);
+  const router = useRouter();
+  const auth = useAuth();
+  useEffect(()=>{
+    if(!localStorage.getItem("blogin-frontend-user") && !localStorage.getItem("blogin-frontend-token"))
+      {
+        router.push('/')
+        return
+      }
+      else
+      {
+        setIsAuth(true)
+      }
+  },[])
+
   const schema = "users";
   const openModal = useSelector((state) => state.modal.value);
   return (
@@ -28,9 +44,9 @@ const Users = () => {
             <Addbutton>Ajouter</Addbutton>
           </div>
 
-          <List schema={schema} />
+          {isAuth && <List schema={schema} />}
 
-          {openModal && (
+          {isAuth && openModal && (
             <div className="z-5">
               <Modal schema={schema} />
             </div>

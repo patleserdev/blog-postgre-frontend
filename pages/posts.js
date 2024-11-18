@@ -4,14 +4,32 @@ import Navbar from "@/components/Navbar";
 import Modal from "@/components/Modal";
 import Head from "next/head.js";
 import { useSelector } from "react-redux";
-
 import Footer from "@/components/Footer.js";
 import Layout from "@/components/Layout.js";
+import { useAuth } from "../hooks/AuthProvider";
+import Router, { useRouter } from "next/router.js";
+import { useState,useEffect } from "react";
+
 export const metadata = {
   title: "Blog - Posts",
   description: "...",
 };
 const Posts = () => {
+  const [isAuth, setIsAuth] = useState(false);
+  const router = useRouter();
+  const auth = useAuth();
+  useEffect(()=>{
+    if(!localStorage.getItem("blogin-frontend-user") && !localStorage.getItem("blogin-frontend-token"))
+      {
+        router.push('/')
+        return
+      }
+      else
+      {
+        setIsAuth(true)
+      }
+  },[])
+
   const schema = "posts";
   const openModal = useSelector((state) => state.modal.value);
   return (
@@ -27,9 +45,9 @@ const Posts = () => {
             <Addbutton>Ajouter</Addbutton>
           </div>
 
-          <List schema={schema} />
+          {isAuth && <List schema={schema} />}
 
-          {openModal && (
+          {isAuth && openModal && (
             <div className="z-5">
               <Modal schema={schema} />
             </div>

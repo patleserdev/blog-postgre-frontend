@@ -7,7 +7,7 @@ import file from '../reducers/file';
 import modal from '../reducers/modal';
 import entity from '../reducers/entity';
 import editmode from '../reducers/editmode'
-
+import AuthProvider from "../hooks/AuthProvider";
 const store = configureStore({
 	reducer: { reloader,file,modal,entity,editmode },
   middleware: (getDefaultMiddleware) =>
@@ -26,9 +26,10 @@ const store = configureStore({
 export default function App({ Component, pageProps }) {
 
   return ( 
+    <AuthProvider>
   <Provider store={store}>
     <Component {...pageProps} />
   </Provider>
-  
+  </AuthProvider>
   )
 }

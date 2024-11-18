@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { datas } from "../datas";
 import GetSelectableDatas from "./GetSelectableDatas";
+import GetChoiceableDatas from "./GetChoiceableDatas"
 import Fileupload from "./Fileupload";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -21,8 +22,6 @@ import { Toaster, toast } from 'sonner'
 
 export default function Form({ schema, except = [], hidden = [],condensed,title = null}) {
 
-  
-
   // const BACKEND_URL = "http://localhost:3000";
   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
   const dispatch = useDispatch();
@@ -31,7 +30,7 @@ export default function Form({ schema, except = [], hidden = [],condensed,title 
   const entity = useSelector((state) => state.entity.value);
   const editMode = useSelector((state) => state.editmode.value);
 
-  const [formData, setFormData] = useState(entity ? entity : []);
+  const [formData, setFormData] = useState([]);
   const [addedSteps, setAddedSteps] = useState([]);
   const [stepInput, setStepInput] = useState("");
   const [editStep, setEditStep] = useState(null);
@@ -41,12 +40,21 @@ export default function Form({ schema, except = [], hidden = [],condensed,title 
   const [identifier, setIdentifier] = useState("");
   const [isLoading,setIsLoading]=useState(false)
 
-  // console.log('formDATA',formData);
+  console.log('formDATA',formData);
+  console.log('entity',entity)
   // console.log('entity',entity);
   useEffect(() => {
     getIdentifier();
     
   }, []);
+  console.log('identifier',identifier)
+
+  useEffect(() => {
+ if(entity)
+ {
+  setFormData(entity)
+ }
+  }, [entity,formData]);
 
   /**
    *  Définit identifier
@@ -225,6 +233,7 @@ export default function Form({ schema, except = [], hidden = [],condensed,title 
     try
     {
       setIsLoading(true)
+      console.log('schema',schema,'entitytoedit',entityToEdit)
     
     const response = await fetch(`${BACKEND_URL}/${schema}${entityToEdit}`, {
       method: !toEdit || entity[identifier] == undefined ? "POST" : "PUT",
@@ -343,11 +352,13 @@ export default function Form({ schema, except = [], hidden = [],condensed,title 
               {input.type != "entity" &&
                 input.type != "upload" &&
                 input.type != "boolean" &&
+                input.type != "choice" &&
                 input.type != "longtext" &&
                 input.type != "steps" &&
-                input.type != "none" && (
+                input.type != "none" &&
+                input.type != "entitychoice" &&(
                   <input
-                    // {...input}
+                    {...input}
                     name={input.field}
                     field={input.field}
                     required={input.required}
@@ -376,7 +387,7 @@ export default function Form({ schema, except = [], hidden = [],condensed,title 
                   value={
                     formData[input.field]
                       ? formData[input.field]
-                      : formData[input.field] || ""
+                      : ""
                   }
                   field={input.field}
                 ></input>
@@ -385,19 +396,17 @@ export default function Form({ schema, except = [], hidden = [],condensed,title 
               {/* // afficher les choices de catégories */}
               {/* // requeter le back , restituer les datas triées par nom formatés */}
               {input.type == "entity" && !hidden.includes(input.field) && (
+             
                 <select
                   key={input.field}
                   name={input.field}
                   className={
                     errors.includes(input.field)
                       ? "border-red-500 border-2 w-1/2 text-black px-1"
-                      : "w-full md:w-1/2 text-black px-1 capitalize h-8"
+                      : "w-full md:w-full text-black px-1 capitalize h-8"
                   }
-                  value={
-                    formData[input.field]
-                      ? formData[input.field]
-                      : formData[input.field] || ""
-                  }
+                  
+                  value={formData[input.field] ? formData[input.field] : formData[input.field] | ""}
                   onChange={(e) => handleChange(e)}
                   field={input.field}
                 >
@@ -410,9 +419,26 @@ export default function Form({ schema, except = [], hidden = [],condensed,title 
                     source={input.entity}
                     valueinselect={input.valueinselect}
                     displayinselect={input.displayinselect}
+                    selected={formData[input.field]}
                   />
                 </select>
               )}
+
+               {/* // afficher les choices de catégories */}
+              {/* // requeter le back , restituer les datas triées par nom formatés */}
+              {input.type == "entitychoice" && !hidden.includes(input.field) && (
+             
+             <div className="w-full border flex flex-row flex-wrap">
+
+               <GetChoiceableDatas
+                 counter={i}
+                 source={input.entity}
+                 valueinselect={input.valueinselect}
+                 displayinselect={input.displayinselect}
+                 
+               />
+             </div>
+           )}
 
               {input.type == "longtext" && (
                 // <textarea
@@ -471,6 +497,32 @@ export default function Form({ schema, except = [], hidden = [],condensed,title 
                   />
                 </div>
               )}
+
+              {input.type == "choice" && (
+                <div className="h-1/4 w-full md:w-full">
+                  <select
+                  className={
+                    errors.includes(input.field)
+                      ? "border-red-500 border-1 w-1/2 text-black px-1"
+                      : "w-full  text-black px-1"
+                  }
+                      key={input.field}
+                      value={
+                        formData[input.field] !== undefined
+                          ? decodeURI(formData[input.field])
+                          : ""
+                      }
+                      onChange={(e) => handleChange(e)}
+                      field={input.field}
+                      
+                      >
+                      <option value="" disabled>Choisir</option>
+                      {input.options.map((option,i)=> <option key={i} value={option.value}>{option.label}</option>)}
+
+                  </select>
+               </div>
+              )}
+
 
               {input.type == "upload" && (
                 <div className="border h-1/4">

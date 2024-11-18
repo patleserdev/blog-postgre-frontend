@@ -11,9 +11,11 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/legacy/image.js";
 
 import getcategories from "../pages/api/getcategories";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Router, { useRouter } from "next/router.js";
 
+import { useAuth } from "../hooks/AuthProvider";
+import { Toaster, toast } from "sonner";
 const navigation = [{ name: "Home", href: "/", current: true }];
 
 function classNames(...classes) {
@@ -21,30 +23,78 @@ function classNames(...classes) {
 }
 
 export default function Navbar2() {
-  const [categories,setCategories]=useState([])
+  const auth = useAuth();
+  const [categories, setCategories] = useState([]);
+  const [adminMode, setAdminMode] = useState(false);
+  const [user, setUser] = useState(auth.user ? auth.user : {});
+  const router = useRouter();
+  const closeRef = useRef(null);
 
-  const router=useRouter()
-  console.log(router)
+  // console.log(router);
   useEffect(() => {
     (async () => {
       const categoriesDatas = await getcategories();
-      if (categoriesDatas) 
-      {
-        setCategories(categoriesDatas)
+      if (categoriesDatas) {
+        setCategories(categoriesDatas);
         // console.log(categoriesDatas);
-
       }
-    })()
+    })();
   }, []);
 
-  if (categories)
-  {
-    categories.map((e)=> e.isactive & !navigation.find((one)=> one.name == decodeURI(e.url).charAt(0).toUpperCase()+decodeURI(e.url).slice(1,e.url.length).toLowerCase()) ? navigation.push(
-      {
-        name:decodeURI(e.url).charAt(0).toUpperCase()+decodeURI(e.url).slice(1,e.url.length).toLowerCase() ,
-        href:`/categorie/${e.url}`,
-        current:false}) : null)
+  useEffect(() => {
+    if (localStorage.getItem("blogin-frontend-token")) {
+      setAdminMode(true);
+      toast.success("Vous êtes connecté")
+    }
+  }, []);
 
+  const handleConnect = (e) => {
+    e.preventDefault();
+   ( async()=>{
+
+      const connect=await auth.loginAction(user)
+     
+      if (connect) 
+      {
+        setAdminMode(true);
+        toast.success("Vous êtes connecté")
+      }
+      else
+      {
+        toast.warning("Accès interdit")
+  
+      }
+  
+      // pour fermer le menu headless ui ;)
+      closeRef.current?.click();
+    })()
+   
+  };
+
+  const handleToLogOut = () => {
+    auth.logOut();
+    setAdminMode(false);
+    toast.warning("Vous êtes déconnecté.")
+  };
+
+  if (categories) {
+    categories.map((e) =>
+      e.isactive &
+      !navigation.find(
+        (one) =>
+          one.name ==
+          decodeURI(e.url).charAt(0).toUpperCase() +
+            decodeURI(e.url).slice(1, e.url.length).toLowerCase()
+      )
+        ? navigation.push({
+            name:
+              decodeURI(e.url).charAt(0).toUpperCase() +
+              decodeURI(e.url).slice(1, e.url.length).toLowerCase(),
+            href: `/categorie/${e.url}`,
+            current: false,
+          })
+        : null
+    );
   }
 
   return (
@@ -82,9 +132,13 @@ export default function Navbar2() {
                   <a
                     key={item.name}
                     href={item.href}
-                    aria-current={(router.asPath).toLowerCase() == item.href ? "page" : undefined}
+                    aria-current={
+                      router.asPath.toLowerCase() == item.href
+                        ? "page"
+                        : undefined
+                    }
                     className={classNames(
-                      (router.asPath).toLowerCase() == item.href.toLowerCase()
+                      router.asPath.toLowerCase() == item.href.toLowerCase()
                         ? "bg-gray-900 text-white"
                         : "text-gray-300 hover:bg-gray-700 hover:text-white",
                       " rounded-md px-3 py-2 text-sm font-medium capitalize "
@@ -109,25 +163,28 @@ export default function Navbar2() {
             {/* Profile dropdown */}
             <Menu as="div" className="relative ml-3">
               <div>
-                <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 p-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800  transition-all">
-                  <span className="absolute -inset-1.5" />
-                  <span className="sr-only">Open user menu</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="size-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"
-                    />
-                  </svg>
-                </MenuButton>
+                {adminMode && (
+                  <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 p-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800  transition-all">
+                    <span className="absolute -inset-1.5" />
+                    <span className="sr-only">Open user menu</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="size-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"
+                      />
+                    </svg>
+                  </MenuButton>
+                )}
               </div>
+
               <MenuItems
                 transition
                 className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
@@ -164,6 +221,95 @@ export default function Navbar2() {
                     Gestion des utilisateurs
                   </a>
                 </MenuItem>
+
+                <MenuItem>
+                  <a
+                    onClick={() => {
+                      handleToLogOut();
+                    }}
+                    className="flex items-center justify-start  px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none cursor-pointer"
+                  >
+                    Se déconnecter
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="mx-2 size-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25"
+                      />
+                    </svg>
+                  </a>
+                </MenuItem>
+              </MenuItems>
+            </Menu>
+
+            <Menu as="div" className="relative ml-3">
+              <div>
+                {!adminMode && (
+                  <MenuButton
+                    ref={closeRef}
+                    className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 p-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800  transition-all"
+                  >
+                    <span className="absolute -inset-1.5" />
+                    <span className="sr-only">Open user menu</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="size-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"
+                      />
+                    </svg>
+                  </MenuButton>
+                )}
+              </div>
+
+              <MenuItems
+                transition
+                className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in text-slate-800 p-2"
+              >
+                <h3 className="my-2 text-lg">Administration</h3>
+                <form
+                  onSubmit={(e) => {
+                    handleConnect(e);
+                  }}
+                >
+                  <label className="px-1">Nom d'utilisateur</label>
+                  <input
+                    className="border my-1 w-ful px-2"
+                    type="text"
+                    onChange={(e) =>
+                      setUser((user) => ({ ...user, username: e.target.value }))
+                    }
+                    value={user.username || ""}
+                  />
+
+                  <label className="px-1">Mot de passe</label>
+                  <input
+                    className="border mt-1 mb-2 w-full px-2"
+                    type="password"
+                    onChange={(e) =>
+                      setUser((user) => ({ ...user, password: e.target.value }))
+                    }
+                    value={user.password || ""}
+                  />
+
+                  <button className="p-1 text-center w-full border hover:bg-slate-200 transition-all">
+                    Se connecter
+                  </button>
+                </form>
               </MenuItems>
             </Menu>
           </div>

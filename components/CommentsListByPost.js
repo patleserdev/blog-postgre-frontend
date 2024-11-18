@@ -64,7 +64,7 @@ export default function CommentsListByPost({ post }) {
                 <h3 className="capitalize">
                   <b>{decodeURI(comment.title)}</b>
                 </h3>
-                <p>{decodeURI(comment.content)}</p>
+                <p dangerouslySetInnerHTML={{__html:decodeURI(comment.content)}}></p>
                 <i>
                   {moment(comment.timestamp).format(
                     "dddd, Do MMMM YYYY, H:mm:ss"

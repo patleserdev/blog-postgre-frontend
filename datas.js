@@ -182,12 +182,19 @@ export const datas = [
         displayinselect: "email",
       },
       {
+        label: "Mot de passe",
+        field: "password",
+        type: "string",
+        placeholder: "mot de passe",
+        
+      },
+      {
         label: "Actif ?",
         field: "isactive",
         type: "boolean",
         placeholder: "Actif",
         display: "isactive",
-      },
+      }
     ],
   },
   {

@@ -126,7 +126,7 @@ export default function Getposts({ categorie=null, incrementer,title=null,little
         "h-full w-full  sm:w-[90%] md:w-[70%] lg:w-[80%]  flex flex-col sm:flex-row md:flex-col justify-center xl:flex-row items-center xl:justify-around"
         : 
         full ?
-        "w-[90%] flex flex-col sm:flex-row sm:flex-wrap items-start justify-start" 
+        "w-full flex flex-col sm:flex-row sm:flex-wrap items-start justify-start" 
         :
         "w-[90%] flex flex-col sm:flex-row sm:flex-wrap items-center justify-around"}>
         {posts != undefined &&

@@ -23,6 +23,7 @@ export default function Home() {
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState("");
+  const [activedSite,setActivedSite]=useState(false)
   const getCategories = async () => {
     setIsLoading(true);
 
@@ -61,7 +62,9 @@ export default function Home() {
 
       <Layout>
         <div className="w-full min-h-[70vh] my-5">
-          {isLoading && (
+       {!activedSite && <div className="flex h-[75vh] items-center justify-center my-5 text-2xl"><h2><b>Base de donnée désactivée</b></h2></div>
+ } 
+          {activedSite && isLoading && (
             <div className="flex h-[65vh] items-center justify-center my-5">
               <PuffLoader
                 color={"white"}
@@ -70,13 +73,13 @@ export default function Home() {
             </div>
           )}
 
-          {errors && !isLoading && !categories && (
+          {activedSite && errors && !isLoading && !categories && (
             <div className="flex h-[65vh] items-center justify-center my-5 ">
               <p className="text-3xl">{errors}</p>
             </div>
           )}
 
-          {categories != undefined && !isLoading && (
+          {activedSite && categories != undefined && !isLoading && (
             <>
               <h1 className="text-xl md:text-2xl md:px-5 md:mb-2 bg-slate-500 p-5 mb-5 flex flex-col md:flex-row md:justify-start items-start">
                 <span >Bienvenue sur Blogin :</span>

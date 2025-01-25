@@ -23,7 +23,7 @@ export default function Home() {
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState("");
-  const [activedSite,setActivedSite]=useState(false)
+  const [activedSite,setActivedSite]=useState(true)
   const getCategories = async () => {
     setIsLoading(true);
 
